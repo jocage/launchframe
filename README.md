@@ -63,7 +63,8 @@ npx create-launchframe@latest my-app \
   --auth email-password+github \
   --email-provider resend \
   --deploy-target vercel \
-  --seed-demo-data yes
+  --seed-demo-data yes \
+  --ai-tools cursor,claude
 ```
 
 ### Run the generated app
@@ -86,20 +87,23 @@ pnpm dev
 | `--email-provider` | `resend`, `none` | `resend` |
 | `--deploy-target` | `vercel`, `docker` | `vercel` |
 | `--seed-demo-data` | `yes`, `no` | `no` |
+| `--ai-tools` | `all`, `none`, or comma-separated: `cursor`, `claude`, `gemini`, `copilot` | `all` |
 
-Interactive mode supports arrow-key selection in TTY terminals and falls back to text input.
+Interactive mode supports arrow-key selection (single) and checkbox selection (multi) in TTY terminals, with text input fallback.
 
 ## AI-First Developer Experience
 
-Every generated project ships with configuration for major AI coding tools:
+Every generated project ships with configuration for major AI coding tools — and you choose which ones to include:
 
-| File | Purpose | Used By |
-|---|---|---|
-| `AGENTS.md` | Tech stack, commands, rules, code patterns | Cursor, Copilot, Codex, Windsurf |
-| `CLAUDE.md` | Imports AGENTS.md + Claude-specific workflow | Claude Code |
-| `.cursor/rules/*.mdc` | Modular auto-activated rules by file pattern | Cursor |
-| `.gemini/GEMINI.md` | Points to AGENTS.md | Gemini Code Assist |
-| `ARCHITECTURE.md` | Directory tree, data flow, extension points | All agents + humans |
+| File | Purpose | Used By | Included when |
+|---|---|---|---|
+| `AGENTS.md` | Tech stack, commands, rules, code patterns | Cursor, Copilot, Codex, Windsurf | Always (base) |
+| `ARCHITECTURE.md` | Directory tree, data flow, extension points | All agents + humans | Always (base) |
+| `CLAUDE.md` | Imports AGENTS.md + Claude-specific workflow | Claude Code | `--ai-tools claude` |
+| `.cursor/rules/*.mdc` | Modular auto-activated rules by file pattern | Cursor | `--ai-tools cursor` |
+| `.gemini/GEMINI.md` | Points to AGENTS.md | Gemini Code Assist | `--ai-tools gemini` |
+
+Use `--ai-tools all` (default) to include everything, `--ai-tools none` for just the base, or pick specific tools: `--ai-tools cursor,claude`.
 
 Agents get explicit MUST DO / MUST NOT DO rules, a "where to find things" router table, and code pattern examples — so they generate code that matches the project's conventions from the first prompt.
 
@@ -121,7 +125,10 @@ The CLI resolves a dependency graph, validates conflicts, applies file overlays,
 |---|---|---|
 | `quality-baseline` | developer-experience | ESLint, Prettier, Husky |
 | `testing-baseline` | developer-experience | Vitest, Playwright, CI |
-| `ai-dx` | developer-experience | AGENTS.md, CLAUDE.md, .cursor/rules/, ARCHITECTURE.md |
+| `ai-dx` | developer-experience | AGENTS.md, ARCHITECTURE.md (always included) |
+| `ai-dx-cursor` | developer-experience | .cursor/rules/*.mdc |
+| `ai-dx-claude` | developer-experience | CLAUDE.md |
+| `ai-dx-gemini` | developer-experience | .gemini/GEMINI.md |
 | `auth-core` | auth | Better Auth baseline |
 | `auth-github` | auth | GitHub OAuth provider |
 | `db-pg` | database | node-postgres driver |
