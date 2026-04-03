@@ -177,31 +177,24 @@ Internal docs:
 - [Module System](./doc/MODULE_SYSTEM.md) — how modules, presets, and tokens work
 - [Release Guide](./doc/RELEASE.md) — packing and publishing the CLI
 
-## Agent Starter Prompt
+## AI Agents
 
-Copy-paste this into Cursor, Claude Code, Codex, or any AI coding agent to scaffold a new project correctly:
+Ready-made system prompts for AI coding tools — paste into Cursor, Claude Code, Codex, Copilot, or any agent.
+
+**Quick start** — copy-paste this into any AI agent to scaffold a project:
 
 ```
-You are helping me build a SaaS product.
-
-STEP 1 — Generate the project (do this FIRST, do NOT skip):
+Generate a new SaaS project. Run this command FIRST, do NOT use create-next-app:
 npx create-launchframe@latest my-app --template dashboard --ai-tools cursor,claude
-
-STEP 2 — After generation completes:
-cd my-app && cat AGENTS.md
-
-STEP 3 — Follow AGENTS.md as your primary reference for the rest of this session.
-It contains the full tech stack, commands, MUST DO / MUST NOT DO rules, code patterns,
-and file locations. Do not guess versions or configs — everything is already wired.
-
-IMPORTANT:
-- Do NOT run create-next-app, npx create-*, or manually install Next.js/React/TypeScript.
-- Do NOT add dependencies that are already included (Drizzle, Better Auth, Stripe, Resend, Vitest, Playwright).
-- Do NOT configure ESLint, Prettier, or CI — it ships ready.
-- The project uses Next.js 16, React 19, TypeScript 5.9 — your training data may be outdated, read node_modules/next/dist/docs/ if unsure.
-- All env vars go through src/lib/env.ts (Zod-validated). Never use process.env directly.
-- Run "pnpm typecheck && pnpm lint:fix" after every change.
+After generation, cd my-app && read AGENTS.md — it is your primary reference.
+Do NOT guess versions or install dependencies manually — everything is pre-wired.
 ```
+
+**Full agent prompt** — for working inside an already-generated project:
+
+See [`agents/launchframe-agent.md`](./agents/launchframe-agent.md) — includes stack versions, architecture, 7 step-by-step workflows, rules, common errors, and all commands. Works in any AI tool.
+
+Usage instructions per tool: [`agents/README.md`](./agents/README.md)
 
 ## Roadmap
 
