@@ -106,7 +106,7 @@ export default function HomePage() {
       <section className="mx-auto grid max-w-6xl gap-12 px-6 py-20 lg:grid-cols-2 lg:items-center lg:gap-16 lg:py-32">
         <div>
           <div className="mb-4 inline-flex items-center rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs text-zinc-400">
-            v0.1.0 — Next.js 16 + React 19
+            Next.js 16 + React 19
           </div>
           <h1 className="text-4xl font-bold leading-tight tracking-tight sm:text-5xl lg:text-6xl">
             Ship your SaaS
