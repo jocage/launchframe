@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { AnimatedTerminal } from '@/components/terminal';
+import { Logo } from '@/components/logo';
 
 const FEATURES = [
   {
@@ -83,8 +84,8 @@ export default function HomePage() {
     <main className="min-h-screen bg-[#050505] text-white">
       {/* Navbar */}
       <nav className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
-        <Link href="/" className="text-xl font-bold tracking-tight">
-          Launchframe
+        <Link href="/" className="transition-opacity hover:opacity-80">
+          <Logo />
         </Link>
         <div className="flex items-center gap-6 text-sm">
           <Link href="/docs" className="text-zinc-400 transition-colors hover:text-white">
