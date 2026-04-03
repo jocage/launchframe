@@ -20,7 +20,9 @@ export const PROFILES = {
       "--deploy-target",
       "vercel",
       "--seed-demo-data",
-      "no"
+      "no",
+      "--ai-tools",
+      "all"
     ]
   },
   dashboard: {
@@ -44,7 +46,9 @@ export const PROFILES = {
       "--deploy-target",
       "vercel",
       "--seed-demo-data",
-      "yes"
+      "yes",
+      "--ai-tools",
+      "all"
     ]
   },
   postgresjs: {
@@ -68,7 +72,9 @@ export const PROFILES = {
       "--deploy-target",
       "vercel",
       "--seed-demo-data",
-      "no"
+      "no",
+      "--ai-tools",
+      "all"
     ]
   }
 };

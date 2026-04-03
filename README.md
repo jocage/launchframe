@@ -49,13 +49,13 @@ Modern marketing landing page, public demo dashboard, protected account surfaces
 ### Generate a project
 
 ```bash
-node apps/cli/bin/create-launchframe.mjs my-app
+npx create-launchframe@latest my-app
 ```
 
 ### Non-interactive (CI-friendly)
 
 ```bash
-node apps/cli/bin/create-launchframe.mjs my-app \
+npx create-launchframe@latest my-app \
   --template dashboard \
   --package-manager pnpm \
   --database-driver pg \
@@ -73,8 +73,6 @@ cd my-app
 pnpm install
 pnpm dev
 ```
-
-> Future: `npx create-launchframe@latest my-app`
 
 ## CLI Options
 
@@ -174,7 +172,7 @@ Internal docs:
 
 ## Roadmap
 
-- [ ] Publish `create-launchframe` to npm
+- [x] Publish `create-launchframe` to npm
 - [x] Documentation site with llms.txt
 - [ ] AI features module (Vercel AI SDK, streaming chat, provider abstraction)
 - [ ] Improve social-auth path (suppress warnings when OAuth envs are absent)
@@ -188,8 +186,6 @@ The repo is moving quickly. Rules are simple:
 - Keep the starter opinionated
 - Prefer incremental module extraction over rewrites
 - Do not merge changes that break smoke verification
-
-Internal implementation notes: [.internal](./.internal/README.md)
 
 ## License
 

@@ -1,0 +1,18 @@
+{
+  "name": "ai-dx-cursor",
+  "kind": "developer-experience",
+  "description": "Cursor IDE rules: modular .mdc files auto-activated by file pattern.",
+  "dependsOn": ["ai-dx"],
+  "conflictsWith": [],
+  "replaces": [],
+  "template": {
+    "copyFiles": [
+      ".cursor/rules/project.mdc",
+      ".cursor/rules/nextjs.mdc",
+      ".cursor/rules/database.mdc",
+      ".cursor/rules/auth.mdc",
+      ".cursor/rules/testing.mdc",
+      ".cursor/rules/env.mdc"
+    ]
+  }
+}

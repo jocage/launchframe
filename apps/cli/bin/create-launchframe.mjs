@@ -131,6 +131,28 @@ const DEPLOY_TARGET_OPTIONS = [
     description: "Use the starter as a self-hosted baseline."
   }
 ];
+const AI_TOOLS_OPTIONS = [
+  {
+    value: "cursor",
+    label: "Cursor",
+    description: ".cursor/rules/*.mdc — modular auto-activated rules by file pattern."
+  },
+  {
+    value: "claude",
+    label: "Claude Code",
+    description: "CLAUDE.md — Claude-specific workflow and conventions."
+  },
+  {
+    value: "gemini",
+    label: "Gemini",
+    description: ".gemini/GEMINI.md — Gemini Code Assist pointer to AGENTS.md."
+  },
+  {
+    value: "copilot",
+    label: "Copilot / Codex",
+    description: "Uses shared AGENTS.md (no extra files needed)."
+  }
+];
 const SEED_OPTIONS = [
   {
     value: "yes",
@@ -213,6 +235,14 @@ async function main() {
     const seedDemoData =
       cliOptions.seedDemoData ??
       (await promptSelect(prompts, "Seed demo data", SEED_OPTIONS, "yes"));
+    const aiTools =
+      cliOptions.aiTools ??
+      (await promptMultiSelect(
+        prompts,
+        "AI tools (AGENTS.md + ARCHITECTURE.md always included)",
+        AI_TOOLS_OPTIONS,
+        AI_TOOLS_OPTIONS.map((o) => o.value)
+      ));
 
     const destination = path.resolve(process.cwd(), projectName);
     await ensureTargetDoesNotExist(destination);
@@ -232,7 +262,8 @@ async function main() {
       authMode,
       billingProvider,
       emailProvider,
-      deployTarget
+      deployTarget,
+      aiTools
     });
     const baseTemplateDir = path.resolve(repoRoot, "templates", scaffoldPlan.base);
     const presetTemplateDir = path.resolve(repoRoot, "templates", scaffoldPlan.template);
@@ -278,7 +309,8 @@ async function main() {
       authMode,
       emailProvider,
       deployTarget,
-      seedDemoData
+      seedDemoData,
+      aiTools
     });
 
     output.write("\nDone.\n");
@@ -430,6 +462,37 @@ function parseArgs(args) {
       );
     }
 
+    if (arg === "--ai-tools") {
+      const nextValue = args[index + 1];
+      if (!nextValue) {
+        throw new Error(`--ai-tools requires a value: all, none, or comma-separated list (cursor,claude,gemini,copilot).`);
+      }
+
+      index += 1;
+
+      if (nextValue === "all") {
+        options.aiTools = AI_TOOLS_OPTIONS.map((o) => o.value);
+        continue;
+      }
+
+      if (nextValue === "none") {
+        options.aiTools = [];
+        continue;
+      }
+
+      const values = nextValue.split(",").map((s) => s.trim());
+      const valid = AI_TOOLS_OPTIONS.map((o) => o.value);
+
+      for (const v of values) {
+        if (!valid.includes(v)) {
+          throw new Error(`Invalid AI tool: ${v}. Expected: ${valid.join(", ")}, all, or none.`);
+        }
+      }
+
+      options.aiTools = values;
+      continue;
+    }
+
     throw new Error(`Unknown argument: ${arg}`);
   }
 
@@ -548,6 +611,142 @@ async function promptSelectWithArrows(label, options, fallback) {
 }
 
 let onKeypress = null;
+
+async function promptMultiSelect(prompts, label, options, fallbackValues) {
+  if (input.isTTY && output.isTTY) {
+    return promptMultiSelectWithArrows(label, options, fallbackValues);
+  }
+
+  return promptMultiSelectWithTextInput(prompts, label, options, fallbackValues);
+}
+
+async function promptMultiSelectWithTextInput(prompts, label, options, fallbackValues) {
+  output.write(`\n${label}\n`);
+
+  for (const [index, option] of options.entries()) {
+    const checked = fallbackValues.includes(option.value) ? "[x]" : "[ ]";
+    output.write(`  ${index + 1}. ${checked} ${option.label} (${option.value})\n`);
+    output.write(`     ${option.description}\n`);
+  }
+
+  const fallbackDisplay = fallbackValues.join(",");
+  const answer = await prompts.question(
+    `Toggle by number (comma-separated), or "all"/"none" (${fallbackDisplay}): `
+  );
+  const normalized = answer.trim();
+
+  if (!normalized) {
+    return fallbackValues;
+  }
+
+  if (normalized === "all") {
+    return options.map((o) => o.value);
+  }
+
+  if (normalized === "none") {
+    return [];
+  }
+
+  const indices = normalized.split(",").map((s) => Number(s.trim()));
+  const selected = [];
+
+  for (const idx of indices) {
+    const option = options[idx - 1];
+    if (!option) {
+      throw new Error(`Invalid selection: ${idx}`);
+    }
+    selected.push(option.value);
+  }
+
+  return selected;
+}
+
+async function promptMultiSelectWithArrows(label, options, fallbackValues) {
+  const checked = new Set(fallbackValues);
+  let cursorIndex = 0;
+
+  emitKeypressEvents(input);
+  input.setRawMode?.(true);
+
+  const cleanup = () => {
+    input.setRawMode?.(false);
+    input.pause();
+    input.removeListener("keypress", onKeypress);
+  };
+
+  const render = () => {
+    output.write(`\x1b[2J\x1b[0f`);
+    output.write(`${label}\n`);
+    output.write("Use ↑/↓ to move, Space to toggle, Enter to confirm.\n\n");
+
+    for (const [index, option] of options.entries()) {
+      const isCursor = index === cursorIndex;
+      const box = checked.has(option.value) ? "[x]" : "[ ]";
+      const marker = isCursor ? "❯" : " ";
+      const line = `${marker} ${box} ${option.label}`;
+      output.write(`${isCursor ? "\x1b[36m" : ""}${line}\x1b[0m\n`);
+      output.write(`     ${option.description}\n`);
+    }
+
+    output.write(`\n  a = all, n = none\n`);
+  };
+
+  const selection = await new Promise((resolve, reject) => {
+    onKeypress = (_str, key) => {
+      if (key?.name === "up") {
+        cursorIndex = cursorIndex === 0 ? options.length - 1 : cursorIndex - 1;
+        render();
+        return;
+      }
+
+      if (key?.name === "down") {
+        cursorIndex = cursorIndex === options.length - 1 ? 0 : cursorIndex + 1;
+        render();
+        return;
+      }
+
+      if (key?.name === "space") {
+        const val = options[cursorIndex].value;
+        if (checked.has(val)) {
+          checked.delete(val);
+        } else {
+          checked.add(val);
+        }
+        render();
+        return;
+      }
+
+      if (_str === "a") {
+        for (const o of options) checked.add(o.value);
+        render();
+        return;
+      }
+
+      if (_str === "n") {
+        checked.clear();
+        render();
+        return;
+      }
+
+      if (key?.name === "return") {
+        output.write("\n");
+        resolve([...checked]);
+        return;
+      }
+
+      if (key?.ctrl && key.name === "c") {
+        reject(new Error("Prompt canceled."));
+      }
+    };
+
+    input.on("keypress", onKeypress);
+    input.resume();
+    render();
+  });
+
+  cleanup();
+  return selection;
+}
 
 function slugifyProjectSegment(value) {
   const normalized = value

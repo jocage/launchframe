@@ -60,6 +60,27 @@ function mapDeployModules(deployTarget) {
   return [];
 }
 
+function mapAiDxModules(aiTools) {
+  if (!aiTools || aiTools.length === 0) {
+    return [];
+  }
+
+  const modules = ["ai-dx"];
+  const toolToModule = {
+    cursor: "ai-dx-cursor",
+    claude: "ai-dx-claude",
+    gemini: "ai-dx-gemini"
+  };
+
+  for (const tool of aiTools) {
+    if (toolToModule[tool]) {
+      modules.push(toolToModule[tool]);
+    }
+  }
+
+  return modules;
+}
+
 async function collectModuleGraph(repoRoot, initialModuleNames) {
   const visited = new Set();
   const modules = new Map();
@@ -131,7 +152,8 @@ export async function resolveScaffoldPlan(repoRoot, options) {
     ...mapAuthModules(options.authMode),
     ...mapBillingModules(options.billingProvider),
     ...mapEmailModules(options.emailProvider),
-    ...mapDeployModules(options.deployTarget)
+    ...mapDeployModules(options.deployTarget),
+    ...mapAiDxModules(options.aiTools)
   ];
   const uniqueModuleNames = [...new Set(initialModuleNames)];
   const modules = await collectModuleGraph(repoRoot, uniqueModuleNames);

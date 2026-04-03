@@ -1,0 +1,13 @@
+{
+  "name": "ai-dx-claude",
+  "kind": "developer-experience",
+  "description": "Claude Code configuration: CLAUDE.md with project-specific workflow.",
+  "dependsOn": ["ai-dx"],
+  "conflictsWith": [],
+  "replaces": [],
+  "template": {
+    "copyFiles": [
+      "CLAUDE.md"
+    ]
+  }
+}

@@ -1,0 +1,13 @@
+{
+  "name": "ai-dx-gemini",
+  "kind": "developer-experience",
+  "description": "Gemini Code Assist configuration: .gemini/GEMINI.md pointing to shared AGENTS.md.",
+  "dependsOn": ["ai-dx"],
+  "conflictsWith": [],
+  "replaces": [],
+  "template": {
+    "copyFiles": [
+      ".gemini/GEMINI.md"
+    ]
+  }
+}

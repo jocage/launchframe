@@ -1,22 +1,14 @@
 {
   "name": "ai-dx",
   "kind": "developer-experience",
-  "description": "AI agent configuration files for Cursor, Claude Code, Copilot, Codex, and Gemini.",
+  "description": "Shared AI agent baseline: AGENTS.md and ARCHITECTURE.md for all tools.",
   "dependsOn": ["quality-baseline"],
   "conflictsWith": [],
   "replaces": [],
   "template": {
     "copyFiles": [
       "AGENTS.md",
-      "CLAUDE.md",
-      "ARCHITECTURE.md",
-      ".cursor/rules/project.mdc",
-      ".cursor/rules/nextjs.mdc",
-      ".cursor/rules/database.mdc",
-      ".cursor/rules/auth.mdc",
-      ".cursor/rules/testing.mdc",
-      ".cursor/rules/env.mdc",
-      ".gemini/GEMINI.md"
+      "ARCHITECTURE.md"
     ]
   }
 }

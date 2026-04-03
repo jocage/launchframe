@@ -10,9 +10,5 @@ export default async function SignUpPage() {
     redirect("/dashboard");
   }
 
-  return (
-    <main className="__AUTH_SCREEN_CLASS__">
-      <EmailAuthForm mode="sign-up" />
-    </main>
-  );
+  return <EmailAuthForm mode="sign-up" />;
 }

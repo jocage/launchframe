@@ -10,9 +10,5 @@ export default async function SignInPage() {
     redirect("/dashboard");
   }
 
-  return (
-    <main className="__AUTH_SCREEN_CLASS__">
-      <EmailAuthForm mode="sign-in" />
-    </main>
-  );
+  return <EmailAuthForm mode="sign-in" />;
 }
