@@ -7,20 +7,20 @@
   --font-mono: ui-monospace, "SF Mono", "Fira Code", monospace;
   --ease: cubic-bezier(0.16, 1, 0.3, 1);
   --radius: 14px;
-  --bg: #0c0a09;
-  --bg-raised: #1a1412;
-  --bg-overlay: #231c18;
-  --bg-subtle: #2a221d;
+  --bg: #09090b;
+  --bg-raised: #111113;
+  --bg-overlay: #18181b;
+  --bg-subtle: #1e1e22;
   --border: rgba(255, 255, 255, 0.06);
   --border-hover: rgba(255, 255, 255, 0.12);
-  --text: #f5f0eb;
-  --text-secondary: #a39890;
-  --text-muted: #6b5f57;
-  --text-inverse: #0c0a09;
-  --accent: #f06543;
-  --accent-dim: rgba(240, 101, 67, 0.12);
-  --accent-glow: rgba(240, 101, 67, 0.25);
-  --accent-hover: #f47a5c;
+  --text: #f0eef5;
+  --text-secondary: #9490a5;
+  --text-muted: #5e5a70;
+  --text-inverse: #09090b;
+  --accent: #00d4aa;
+  --accent-dim: rgba(0, 212, 170, 0.12);
+  --accent-glow: rgba(0, 212, 170, 0.25);
+  --accent-hover: #00eabc;
   --danger: #f04e4e;
   --danger-dim: rgba(240, 78, 78, 0.12);
   --success: #34c759;
@@ -104,11 +104,47 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
   background: var(--bg-overlay);
 }
 .hero-actions a:first-child {
-  color: var(--text);
+  color: var(--text-inverse);
   background: var(--accent);
   border-color: var(--accent);
 }
 .hero-actions a:first-child:hover { background: var(--accent-hover); box-shadow: var(--glow); }
+
+/* ── Blank header ──────────────────────────────────────────────── */
+
+.blank-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  padding: 14px 28px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  background: rgba(9, 9, 11, 0.6);
+  backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid var(--border);
+  animation: fade-down 0.5s var(--ease);
+}
+.blank-logo {
+  font-family: var(--font-display);
+  font-weight: 900;
+  font-size: 1.0625rem;
+  letter-spacing: -0.03em;
+}
+.blank-nav { display: flex; align-items: center; gap: 6px; }
+.blank-nav a {
+  padding: 8px 16px;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-secondary);
+  border-radius: 999px;
+  transition: all 0.15s ease;
+}
+.blank-nav a:hover { color: var(--text); }
+.blank-nav-cta { background: var(--accent); color: var(--text-inverse) !important; font-weight: 600; }
+.blank-nav-cta:hover { background: var(--accent-hover); }
 
 /* ── Auth form (Fennec-style) ──────────────────────────────────── */
 
@@ -278,7 +314,7 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
   font-family: var(--font-display);
   font-weight: 700;
   font-size: 0.9375rem;
-  color: var(--text);
+  color: var(--text-inverse);
   background: var(--accent);
   border: 1px solid var(--accent);
   border-radius: var(--radius);
@@ -320,7 +356,7 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
   font-family: var(--font-display);
   font-weight: 600;
   font-size: 0.9375rem;
-  color: var(--text);
+  color: var(--text-inverse);
   background: var(--accent);
   border: 1px solid var(--accent);
   border-radius: var(--radius);
@@ -459,8 +495,8 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
 .pricing-card:hover { border-color: var(--border-hover); transform: translateY(-2px); box-shadow: var(--shadow); }
 .pricing-card.featured {
   border-color: var(--accent);
-  background: linear-gradient(to bottom, var(--bg-raised), rgba(240, 101, 67, 0.04));
-  box-shadow: 0 0 60px rgba(240, 101, 67, 0.08);
+  background: linear-gradient(to bottom, var(--bg-raised), var(--accent-dim));
+  box-shadow: 0 0 60px var(--accent-dim);
 }
 .pricing-card .plan-name { font-family: var(--font-display); font-size: 1.125rem; font-weight: 700; margin: 0; }
 .pricing-card .plan-price { display: flex; align-items: baseline; gap: 4px; }
@@ -487,7 +523,7 @@ h2 { font-size: clamp(1.5rem, 3vw, 2.25rem); }
   text-decoration: none;
 }
 .pricing-cta:hover { color: var(--text); border-color: var(--border-hover); }
-.pricing-card.featured .pricing-cta { color: var(--text); background: var(--accent); border-color: var(--accent); }
+.pricing-card.featured .pricing-cta { color: var(--text-inverse); background: var(--accent); border-color: var(--accent); }
 .pricing-card.featured .pricing-cta:hover { background: var(--accent-hover); box-shadow: var(--glow); }
 
 @media (max-width: 640px) {
