@@ -1,0 +1,21 @@
+{
+  "name": "db-pg",
+  "kind": "database",
+  "description": "Drizzle ORM with node-postgres.",
+  "dependsOn": ["quality-baseline"],
+  "conflictsWith": ["db-postgresjs"],
+  "replaces": [],
+  "template": {
+    "tokenReplacements": {
+      "__DATABASE_DRIVER__": "pg",
+      "__DATABASE_DEPENDENCIES__": "    \"pg\": \"8.16.x\",",
+      "__DATABASE_DEV_DEPENDENCIES__": "    \"@types/pg\": \"^8.15.5\",",
+      "__DRIZZLE_DRIVER_IMPORT__": "drizzle-orm/node-postgres",
+      "__DATABASE_CLIENT_IMPORT__": "import { Pool } from \"pg\";",
+      "__DATABASE_GLOBAL_BLOCK__": "const globalForDb = globalThis as typeof globalThis & {\n  __pandaPool?: Pool;\n};",
+      "__DATABASE_CLIENT_EXPRESSION__": "globalForDb.__pandaPool ??\n  new Pool({\n    connectionString: env.DATABASE_URL\n  })",
+      "__DATABASE_DEV_CACHE__": "  globalForDb.__pandaPool = client;",
+      "__DATABASE_DRIZZLE_EXPRESSION__": "drizzle({\n  client\n})"
+    }
+  }
+}

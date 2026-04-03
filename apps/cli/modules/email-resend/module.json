@@ -1,0 +1,21 @@
+{
+  "name": "email-resend",
+  "kind": "email",
+  "description": "Resend transactional email integration.",
+  "dependsOn": ["auth-core"],
+  "conflictsWith": [],
+  "replaces": [],
+  "template": {
+    "emailProvider": "resend",
+    "packageDependencies": [
+      "    \"resend\": \"6.0.3\","
+    ],
+    "email": {
+      "imports": [
+        "import { Resend } from \"resend\";"
+      ],
+      "setup": "let resendClient: Resend | null = null;\n\nfunction getEmailClient() {\n  if (!env.RESEND_API_KEY) {\n    throw new Error(\"RESEND_API_KEY is required for email sending.\");\n  }\n\n  resendClient ??= new Resend(env.RESEND_API_KEY);\n  return resendClient;\n}",
+      "sendImplementation": "  const resend = getEmailClient();\n\n  return resend.emails.send({\n    from: getFromAddress(),\n    to: input.to,\n    subject: input.template.subject,\n    text: input.template.text,\n    html: input.template.html\n  });"
+    }
+  }
+}

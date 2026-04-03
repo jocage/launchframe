@@ -1,0 +1,40 @@
+---
+title: AI-First DX
+description: AI agent configuration files for Cursor, Claude Code, Copilot, Gemini, and Codex.
+---
+
+Every generated project ships with configuration files that make AI coding tools immediately productive.
+
+## What's included
+
+| File | Used By | Purpose |
+|---|---|---|
+| `AGENTS.md` | Cursor, Copilot, Codex, Windsurf | Tech stack, commands, MUST DO / MUST NOT DO rules, code patterns |
+| `CLAUDE.md` | Claude Code | Imports AGENTS.md + Claude-specific workflow tips |
+| `.cursor/rules/project.mdc` | Cursor | Project-wide conventions |
+| `.cursor/rules/nextjs.mdc` | Cursor | Next.js 16 patterns (App Router, server/client) |
+| `.cursor/rules/database.mdc` | Cursor | Drizzle ORM patterns |
+| `.cursor/rules/auth.mdc` | Cursor | Better Auth patterns |
+| `.cursor/rules/testing.mdc` | Cursor | Vitest + Playwright patterns |
+| `.cursor/rules/env.mdc` | Cursor | Environment variable handling |
+| `.gemini/GEMINI.md` | Gemini Code Assist | Points to AGENTS.md |
+| `ARCHITECTURE.md` | All agents + humans | Directory tree, data flow, extension points |
+
+## What agents learn
+
+- **Tech stack**: exact versions of Next.js, React, TypeScript, Drizzle, Better Auth
+- **Commands**: lint, typecheck, test, build, db operations
+- **Rules**: server/client boundaries, import patterns, naming conventions
+- **Where to find things**: router table mapping concerns to files
+- **MUST DO / MUST NOT DO**: explicit guardrails for code generation
+
+## Module info
+
+- **Module name**: `ai-dx`
+- **Kind**: `developer-experience`
+- **Depends on**: `quality-baseline`
+- **Included in**: all presets by default
+
+## Customization
+
+After generation, edit any of these files to match your evolving project conventions. The `.cursor/rules/*.mdc` files use glob patterns to auto-activate when editing matching files.

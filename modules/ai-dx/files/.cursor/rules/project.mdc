@@ -1,0 +1,33 @@
+---
+description: Project-wide conventions for this Launchframe-generated app
+globs:
+alwaysApply: true
+---
+
+# Project Conventions
+
+## Stack
+
+Next.js 16 · React 19 · TypeScript 5.9 (strict) · Drizzle ORM · Better Auth · Vitest · Playwright
+
+## Style
+
+- Double quotes, semicolons, no trailing commas, 88-char line width (Prettier)
+- `type` imports: `import { type Foo }` — enforced by ESLint
+- Path alias: `@/*` maps to `./src/*`
+- Import order: builtin → external → internal (`@/**`) → relative (enforced, auto-fixable)
+
+## Rules
+
+- Server components by default. Only add `"use client"` when hooks or browser APIs are required.
+- Keep route files (`page.tsx`) thin — delegate logic to `src/lib/`.
+- All env access goes through `src/lib/env.ts`. Direct `process.env` is banned by ESLint everywhere else.
+- Run `pnpm typecheck && pnpm lint:fix` after changes.
+
+## Where to Look
+
+- Routes: `src/app/`
+- Business logic: `src/lib/`
+- Database: `src/db/`
+- Tests: `src/**/*.test.{ts,tsx}` (unit), `tests/e2e/` (e2e)
+- Middleware: `proxy.ts`

@@ -1,0 +1,86 @@
+---
+title: Module System
+description: How Launchframe's modular architecture works — modules, presets, and the assembly model.
+---
+
+Launchframe is built from composable modules rather than monolithic templates. This keeps additions predictable and conflict-free.
+
+## Three layers
+
+```
+templates/base-web     →  shared skeleton (all projects start here)
+presets/*.json         →  curated module bundles (blank, dashboard)
+modules/*/             →  composable capabilities
+```
+
+### Base
+
+The minimal Next.js app skeleton. Contains the App Router structure, shared utilities, CSS variables, and tokenized placeholders that modules fill in.
+
+### Modules
+
+Self-contained capability units. Each module declares metadata, dependencies, conflicts, and the files it contributes.
+
+### Presets
+
+Named bundles of modules. `blank` and `dashboard` are presets — they list which modules to include and provide token replacement values.
+
+## Available modules
+
+| Module | Kind | Description |
+|---|---|---|
+| `quality-baseline` | developer-experience | ESLint 9, Prettier, Husky + lint-staged |
+| `testing-baseline` | developer-experience | Vitest 3.2, Playwright 1.55, CI config |
+| `ai-dx` | developer-experience | AGENTS.md, CLAUDE.md, .cursor/rules, ARCHITECTURE.md |
+| `auth-core` | auth | Better Auth baseline (email/password, sessions) |
+| `auth-github` | auth | GitHub OAuth provider |
+| `db-pg` | database | node-postgres driver for Drizzle |
+| `db-postgresjs` | database | postgres.js driver for Drizzle |
+| `billing-stripe` | billing | Stripe checkout, portal, webhooks |
+| `billing-polar` | billing | Polar checkout, portal, webhooks |
+| `email-resend` | email | Resend transactional email |
+| `deploy-docker` | deploy | Dockerfile + .dockerignore |
+| `dashboard-shell` | ui | Dashboard CSS layer + settings page |
+
+## Module anatomy
+
+```
+modules/billing-stripe/
+├── module.json          # Metadata, dependencies, operations
+└── files/               # Files to copy into generated project
+    └── ...
+```
+
+### module.json
+
+```json
+{
+  "name": "billing-stripe",
+  "kind": "billing",
+  "description": "Stripe billing provider integration",
+  "dependsOn": ["auth-core"],
+  "conflictsWith": [],
+  "replaces": [],
+  "template": {
+    "copyFiles": ["..."],
+    "tokenReplacements": { "...": "..." }
+  }
+}
+```
+
+## Assembly model
+
+When you run `create-launchframe`:
+
+1. Load the selected **base** template
+2. Resolve the selected **preset**
+3. Add/remove modules from explicit CLI options
+4. Validate dependencies and detect conflicts
+5. Assemble files and token replacements in deterministic order
+6. Write the final project + `launchframe.json` manifest
+
+## Conflict rules
+
+- `db-pg` conflicts with `db-postgresjs` — you pick one
+- `billing-stripe` and `billing-polar` can coexist (both selected via `--billing both`)
+- Absence of a module is valid — `--email-provider none` simply omits `email-resend`

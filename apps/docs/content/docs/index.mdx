@@ -1,0 +1,75 @@
+---
+title: Getting Started
+description: Set up your first Launchframe project in under a minute.
+---
+
+## What is Launchframe?
+
+Launchframe is an opinionated SaaS starter for **Next.js 16**. One CLI command scaffolds a production-ready project with auth, billing, email, database, testing, CI/CD, and AI-first developer experience.
+
+Two templates ship today:
+
+- **blank** — minimal SaaS baseline: landing page, auth, billing, email, database
+- **dashboard** — product-facing starter: marketing page, demo dashboard, polished UI, dark design system
+
+## Prerequisites
+
+- **Node.js 22+** (LTS recommended)
+- **pnpm** (or npm / bun)
+- **PostgreSQL** database (local or hosted)
+
+## Install
+
+```bash
+npx create-launchframe my-app
+```
+
+The interactive wizard walks you through template, database driver, billing provider, auth provider, email, and deploy target.
+
+## Non-interactive (CI-friendly)
+
+```bash
+npx create-launchframe my-app \
+  --template dashboard \
+  --database-driver pg \
+  --billing stripe \
+  --auth email-password+github \
+  --email-provider resend \
+  --deploy-target docker \
+  --package-manager pnpm
+```
+
+## Run
+
+```bash
+cd my-app
+cp .env.example .env.local   # add your keys
+pnpm install
+pnpm dev
+```
+
+Open [http://localhost:3000](http://localhost:3000).
+
+## What's Included
+
+Every generated project ships with:
+
+| Area | Stack |
+|---|---|
+| Framework | Next.js 16 App Router, React 19, TypeScript 5.9 |
+| Database | PostgreSQL + Drizzle ORM (migrations, seeds, typed schema) |
+| Auth | Better Auth — email/password + optional GitHub OAuth |
+| Billing | Stripe or Polar (checkout, portal, webhooks) |
+| Email | Resend transactional email |
+| Testing | Vitest (unit) + Playwright (E2E) |
+| Quality | ESLint 9, Prettier, Husky + lint-staged |
+| CI/CD | GitHub Actions |
+| AI DX | AGENTS.md, CLAUDE.md, .cursor/rules, ARCHITECTURE.md |
+| Deploy | Vercel or Docker |
+
+## Next Steps
+
+- [Quick Start →](/docs/quick-start) — step-by-step setup with env vars
+- [CLI Options →](/docs/cli-options) — full reference for all flags
+- [Templates →](/docs/templates) — what each template includes
+- [Modules →](/docs/modules) — how the modular architecture works

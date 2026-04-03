@@ -1,0 +1,4 @@
+{
+  "title": "Guides",
+  "pages": ["env-variables", "adding-a-page", "adding-a-db-table", "protected-routes", "deploy-vercel", "deploy-docker"]
+}

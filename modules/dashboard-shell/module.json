@@ -1,0 +1,11 @@
+{
+  "name": "dashboard-shell",
+  "kind": "ui",
+  "description": "Dashboard-oriented app shell and example UI.",
+  "dependsOn": ["auth-core", "testing-baseline"],
+  "conflictsWith": [],
+  "replaces": [],
+  "template": {
+    "copyFiles": ["src/app/globals.css", "src/app/settings/page.tsx"]
+  }
+}

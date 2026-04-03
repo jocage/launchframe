@@ -1,0 +1,20 @@
+{
+  "name": "billing-polar",
+  "kind": "billing",
+  "description": "Polar billing provider integration.",
+  "dependsOn": ["auth-core"],
+  "conflictsWith": [],
+  "replaces": [],
+  "template": {
+    "billingProviders": ["polar"],
+    "billing": {
+      "imports": [
+        "import { PolarBillingProvider } from \"./providers/polar\";"
+      ],
+      "factories": [
+        "  polar: () => new PolarBillingProvider(),"
+      ],
+      "polarWebhookRouteBody": "  const provider = getBillingProvider(\"polar\");\n  const rawBody = await request.text();\n\n  await provider.handleWebhook({\n    headers: request.headers,\n    rawBody\n  });\n\n  return Response.json({ received: true });"
+    }
+  }
+}

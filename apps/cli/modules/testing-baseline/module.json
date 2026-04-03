@@ -1,0 +1,8 @@
+{
+  "name": "testing-baseline",
+  "kind": "developer-experience",
+  "description": "Vitest, Playwright, and CI testing defaults.",
+  "dependsOn": ["quality-baseline"],
+  "conflictsWith": [],
+  "replaces": []
+}

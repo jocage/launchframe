@@ -1,0 +1,57 @@
+---
+title: Protected Routes
+description: How route protection works and how to add new protected routes.
+---
+
+## How it works
+
+Launchframe uses Next.js middleware to protect routes. Unauthenticated users are redirected to `/sign-in`.
+
+## Adding a protected route
+
+1. Add the path to `src/middleware.ts`:
+
+```ts
+const protectedRoutes = [
+  '/dashboard',
+  '/settings',
+  '/billing',
+  '/analytics',  // your new route
+];
+```
+
+2. Optionally check the session in your page for extra safety:
+
+```tsx
+import { getSession } from '@/lib/auth-session';
+import { redirect } from 'next/navigation';
+
+export default async function AnalyticsPage() {
+  const session = await getSession();
+  if (!session) redirect('/sign-in');
+
+  // render protected content
+}
+```
+
+## Public routes
+
+Routes not listed in `protectedRoutes` are publicly accessible. The landing page, sign-in, and sign-up pages are public by default.
+
+## API route protection
+
+For API routes, check the session directly:
+
+```ts
+import { getSession } from '@/lib/auth-session';
+import { NextResponse } from 'next/server';
+
+export async function GET() {
+  const session = await getSession();
+  if (!session) {
+    return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+
+  return NextResponse.json({ user: session.user });
+}
+```

@@ -1,0 +1,4 @@
+{
+  "title": "Modules",
+  "pages": ["index", "auth", "database", "billing", "email", "deploy", "ai-dx"]
+}

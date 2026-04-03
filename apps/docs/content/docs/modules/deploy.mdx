@@ -1,0 +1,44 @@
+---
+title: Deploy
+description: Vercel and Docker deployment options.
+---
+
+## Deploy targets
+
+### Vercel (default)
+
+Zero-config deployment. The generated project works with `vercel deploy` or Git-connected deploys out of the box.
+
+```bash
+npx create-launchframe my-app --deploy-target vercel
+```
+
+No additional files are added — Next.js on Vercel is the default.
+
+### Docker
+
+Adds a production-optimized `Dockerfile` and `.dockerignore`.
+
+```bash
+npx create-launchframe my-app --deploy-target docker
+```
+
+#### Generated files
+
+| File | Purpose |
+|---|---|
+| `Dockerfile` | Multi-stage build (deps → build → runner) |
+| `.dockerignore` | Excludes node_modules, .next, .git, etc. |
+
+#### Build and run
+
+```bash
+docker build -t my-saas .
+docker run -p 3000:3000 --env-file .env.local my-saas
+```
+
+The Dockerfile uses multi-stage builds for minimal image size:
+
+1. **deps** — install production dependencies
+2. **build** — build the Next.js app
+3. **runner** — minimal runtime image with only production artifacts

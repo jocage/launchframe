@@ -1,0 +1,14 @@
+{
+  "title": "Docs",
+  "pages": [
+    "index",
+    "quick-start",
+    "cli-options",
+    "...templates",
+    "...modules",
+    "...guides",
+    "architecture",
+    "contributing",
+    "changelog"
+  ]
+}

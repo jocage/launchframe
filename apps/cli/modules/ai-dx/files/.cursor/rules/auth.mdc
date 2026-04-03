@@ -1,0 +1,53 @@
+---
+description: Better Auth patterns for authentication and session management
+globs: src/lib/auth*, src/app/sign-*/**
+alwaysApply: false
+---
+
+# Authentication (Better Auth)
+
+## Server-side Session
+
+```ts
+import { getSession } from "@/lib/auth-session";
+
+const session = await getSession();
+// session is { user, session } | null
+if (!session) {
+  redirect("/sign-in");
+}
+```
+
+## Client-side Auth
+
+```tsx
+"use client";
+
+import { authClient } from "@/lib/auth-client";
+
+// Sign in
+await authClient.signIn.email({ email, password });
+
+// Sign out
+await authClient.signOut();
+
+// Get session (client hook)
+const { data: session } = authClient.useSession();
+```
+
+## Config
+
+- Server config: `src/lib/auth.ts` (server-only, uses Drizzle adapter)
+- Client config: `src/lib/auth-client.ts`
+- Auth schema: `src/db/schema/auth.ts` (auto-generated via `pnpm auth:generate`)
+- API handler: `src/app/api/auth/[...all]/route.ts`
+
+## Route Protection
+
+`proxy.ts` checks for session cookies and redirects unauthenticated users. Protected routes are listed in the matcher config there.
+
+## Adding Social Providers
+
+1. Add provider config in `src/lib/auth.ts`
+2. Add env vars in `src/lib/env.ts`
+3. Add UI button in the auth form component

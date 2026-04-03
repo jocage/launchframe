@@ -1,0 +1,75 @@
+---
+title: Billing
+description: Stripe and Polar billing providers with checkout, portal, and webhook support.
+---
+
+Launchframe implements billing behind a **provider abstraction** so your app code doesn't couple to a specific vendor.
+
+## Provider modules
+
+### `billing-stripe` (default)
+
+[Stripe](https://stripe.com) checkout sessions, customer portal, and webhook handling.
+
+### `billing-polar`
+
+[Polar](https://polar.sh) — developer-friendly billing alternative. Same abstraction interface.
+
+Select your provider:
+
+```bash
+npx create-launchframe my-app --billing stripe
+npx create-launchframe my-app --billing polar
+npx create-launchframe my-app --billing both
+npx create-launchframe my-app --billing none
+```
+
+## Provider contract
+
+```ts
+interface BillingProvider {
+  createCheckoutSession(input: {
+    userId: string;
+    customerEmail: string;
+    priceId: string;
+    successUrl: string;
+    cancelUrl: string;
+  }): Promise<{ url: string }>;
+
+  createCustomerPortalSession(input: {
+    userId: string;
+    customerId: string;
+    returnUrl: string;
+  }): Promise<{ url: string }>;
+
+  handleWebhook(input: {
+    rawBody: string;
+    signature?: string;
+  }): Promise<void>;
+}
+```
+
+## Key files
+
+| File | Purpose |
+|---|---|
+| `src/lib/billing.ts` | Provider initialization |
+| `src/app/billing/page.tsx` | Billing management page |
+| `src/app/api/billing/webhook/route.ts` | Webhook handler |
+
+## Environment (Stripe)
+
+```ini
+STRIPE_SECRET_KEY=sk_test_...
+STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_PRICE_ID=price_...
+STRIPE_WEBHOOK_SECRET=whsec_...
+```
+
+## Environment (Polar)
+
+```ini
+POLAR_ACCESS_TOKEN=...
+POLAR_ORGANIZATION_ID=...
+POLAR_WEBHOOK_SECRET=...
+```

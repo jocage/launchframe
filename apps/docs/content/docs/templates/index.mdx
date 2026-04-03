@@ -1,0 +1,51 @@
+---
+title: Templates Overview
+description: Launchframe ships two templates — pick the one that fits your product.
+---
+
+Templates are the starting shape of your generated project. They define the pages, layout, and default content.
+
+## Available Templates
+
+### `blank`
+
+A minimal SaaS baseline. Use this when you want a clean slate with all the infrastructure wired up.
+
+**Includes:**
+- Marketing landing page
+- Sign in / sign up pages
+- Protected dashboard (empty state)
+- Settings page
+- Billing page
+- Email demo page
+- Responsive layout
+- Dark-first design system
+
+```bash
+npx create-launchframe my-app --template blank
+```
+
+### `dashboard`
+
+A product-facing starter with enough surface area to demonstrate real SaaS patterns.
+
+**Includes everything in `blank`, plus:**
+- Polished marketing landing page with feature sections
+- Demo dashboard with overview cards and activity feed
+- Sidebar navigation shell
+- Settings with form patterns
+- Dark design system with glass morphism, gradients, and micro-animations
+
+```bash
+npx create-launchframe my-app --template dashboard
+```
+
+## How Templates Work
+
+Templates are not standalone projects. They're assembled from three layers:
+
+1. **`templates/base-web/`** — the shared skeleton that all projects start from
+2. **`presets/*.json`** — curated module bundles (blank, dashboard)
+3. **`modules/*/`** — composable capabilities applied on top
+
+The `blank` preset includes the core modules. The `dashboard` preset adds `dashboard-shell` for the enhanced UI.

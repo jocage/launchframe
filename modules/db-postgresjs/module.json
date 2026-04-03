@@ -1,0 +1,21 @@
+{
+  "name": "db-postgresjs",
+  "kind": "database",
+  "description": "Drizzle ORM with postgres.js.",
+  "dependsOn": ["quality-baseline"],
+  "conflictsWith": ["db-pg"],
+  "replaces": [],
+  "template": {
+    "tokenReplacements": {
+      "__DATABASE_DRIVER__": "postgres.js",
+      "__DATABASE_DEPENDENCIES__": "    \"postgres\": \"^3.4.7\",",
+      "__DATABASE_DEV_DEPENDENCIES__": "",
+      "__DRIZZLE_DRIVER_IMPORT__": "drizzle-orm/postgres-js",
+      "__DATABASE_CLIENT_IMPORT__": "import postgres from \"postgres\";",
+      "__DATABASE_GLOBAL_BLOCK__": "const globalForDb = globalThis as typeof globalThis & {\n  __pandaClient?: ReturnType<typeof postgres>;\n};",
+      "__DATABASE_CLIENT_EXPRESSION__": "globalForDb.__pandaClient ??\n  postgres(env.DATABASE_URL, {\n    prepare: false\n  })",
+      "__DATABASE_DEV_CACHE__": "  globalForDb.__pandaClient = client;",
+      "__DATABASE_DRIZZLE_EXPRESSION__": "drizzle(client)"
+    }
+  }
+}

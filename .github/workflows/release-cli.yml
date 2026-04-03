@@ -1,0 +1,60 @@
+name: Release CLI
+
+on:
+  workflow_dispatch:
+    inputs:
+      publish:
+        description: "Publish create-launchframe to npm"
+        required: true
+        default: false
+        type: boolean
+
+jobs:
+  release-cli:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Setup pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.18.0
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: pnpm
+          registry-url: https://registry.npmjs.org
+
+      - name: Install root dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Verify starter matrix
+        run: |
+          pnpm smoke:verify:blank
+          pnpm smoke:verify:dashboard
+          pnpm smoke:verify:postgresjs
+
+      - name: Pack CLI
+        run: pnpm cli:pack
+
+      - name: Upload tarball artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: create-launchframe-tarball
+          path: create-launchframe-*.tgz
+
+      - name: Dry-run publish
+        run: pnpm cli:publish:dry-run
+
+      - name: Publish to npm
+        if: ${{ inputs.publish }}
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+        run: pnpm --filter create-launchframe publish --access public --no-git-checks --provenance

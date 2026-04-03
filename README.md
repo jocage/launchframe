@@ -1,305 +1,200 @@
 # Launchframe
 
-[![Next.js](https://img.shields.io/badge/Next.js-16-black)](https://nextjs.org/)
-[![TypeScript](https://img.shields.io/badge/TypeScript-5.9-blue)](https://www.typescriptlang.org/)
+[![Next.js 16](https://img.shields.io/badge/Next.js-16-black?logo=next.js)](https://nextjs.org/)
+[![TypeScript 5.9](https://img.shields.io/badge/TypeScript-5.9-blue?logo=typescript)](https://www.typescriptlang.org/)
+[![React 19](https://img.shields.io/badge/React-19-61dafb?logo=react)](https://react.dev/)
+[![Drizzle ORM](https://img.shields.io/badge/Drizzle-ORM-green?logo=drizzle)](https://orm.drizzle.team/)
+[![Better Auth](https://img.shields.io/badge/Auth-Better_Auth-purple)](https://www.better-auth.com/)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg)](./apps/cli/package.json)
 [![CLI Packaging](https://img.shields.io/badge/CLI-pack%20verified-success)](./doc/RELEASE.md)
 
-Opinionated, type-safe SaaS starter for Next.js 16.
+**AI-first modular SaaS starter for Next.js.** Generate a production-ready project with auth, billing, email, database, testing, CI, and AI agent rules — in seconds.
 
-Launchframe is for people who want to start shipping product code immediately, without rebuilding the same auth, billing, email, database, testing, and CI baseline on every new app.
+![Launchframe hero preview](./media/launchframe-hero.svg)
 
-## Why
+## Why Launchframe
 
-Most starter kits force a bad tradeoff:
+Most starter kits force a bad tradeoff: too thin (you spend days wiring the real baseline) or too bloated (you spend days deleting framework theater).
 
-- either they are too thin and you still spend days wiring the real product baseline
-- or they are too bloated and you spend days deleting framework theater
+Launchframe sits in the middle — opinionated enough to ship, structured enough to scale, clean enough for humans and AI agents to extend.
 
-Launchframe is trying to sit in the useful middle:
-
-- strong defaults
-- a small number of meaningful options
-- verified generated output
-- clean enough structure to keep extending after day one
-
-## What You Get
-
-- Next.js 16 with App Router
-- strict TypeScript + Zod runtime validation
-- PostgreSQL + Drizzle ORM
-- Better Auth
-- Stripe and Polar-ready billing architecture
-- Resend email layer
-- ESLint, Prettier, Husky, Vitest, Playwright, and GitHub Actions
-- `blank` and `dashboard` templates
-- package manager choice: `pnpm`, `npm`, `bun`
-- Postgres driver choice: `pg`, `postgres.js`
-- modular generator architecture for future modules and presets
-
-## Feature Matrix
-
-| Capability | Blank | Dashboard |
-| --- | --- | --- |
-| Next.js 16 + App Router | Yes | Yes |
-| TypeScript + Zod | Yes | Yes |
-| Better Auth | Yes | Yes |
-| PostgreSQL + Drizzle | Yes | Yes |
-| Billing surface | Yes | Yes |
-| Email surface | Yes | Yes |
-| Protected routes | Yes | Yes |
-| Settings page | Module-ready | Yes |
-| Dashboard UI shell | Minimal | Yes |
-| Tests + CI | Yes | Yes |
+| What You Get | Details |
+|---|---|
+| **Framework** | Next.js 16, App Router, React 19, server components |
+| **Language** | TypeScript 5.9 (strict, `noUncheckedIndexedAccess`, `exactOptionalPropertyTypes`) |
+| **Database** | PostgreSQL + Drizzle ORM 0.44 (migrations, seeds, typed schema) |
+| **Auth** | Better Auth 1.3 — email/password, optional GitHub OAuth |
+| **Billing** | Stripe + Polar provider abstraction (checkout, portal, webhooks) |
+| **Email** | Resend integration with HTML templates |
+| **Testing** | Vitest 3.2 (unit) + Playwright 1.55 (E2E) |
+| **Quality** | ESLint 9 flat config, Prettier, Husky + lint-staged pre-commit |
+| **CI/CD** | GitHub Actions — lint, typecheck, test, build |
+| **AI DX** | `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`, `.gemini/`, `ARCHITECTURE.md` |
+| **Deploy** | Vercel (default) or Docker |
 
 ## Templates
 
-### `blank`
+### `blank` — clean SaaS baseline
 
-Minimal SaaS baseline with:
+Landing page, auth pages, protected dashboard, billing, email, database scaffolding.
 
-- polished landing page
-- auth pages
-- protected dashboard route
-- billing page
-- email page
-- database and auth scaffolding
+### `dashboard` — product-facing starter
 
-### `dashboard`
+Modern marketing landing page, public demo dashboard, protected account surfaces (settings, billing, email), dark design system.
 
-Starter SaaS app shell with:
-
-- responsive dashboard layout
-- stats and overview UI
-- settings page
-- billing and email surfaces
-- same auth, DB, CI, and testing baseline
-
-## Current Status
-
-The project is already usable.
-
-Verified paths:
-
-- generated `blank` app passes `install`, `lint`, `typecheck`, `test`, and `build`
-- generated `dashboard` app passes `install`, `lint`, `typecheck`, `test`, and `build`
-- `postgres.js` profile passes the same verification path
-- publishable CLI tarball was packed, installed outside the monorepo, and used successfully via `npx create-launchframe`
+![Launchframe dashboard preview](./media/launchframe-dashboard.svg)
 
 ## Quick Start
 
-### Local repo usage
+### Generate a project
 
 ```bash
 node apps/cli/bin/create-launchframe.mjs my-app
 ```
 
-### Non-interactive usage
+### Non-interactive (CI-friendly)
 
 ```bash
 node apps/cli/bin/create-launchframe.mjs my-app \
   --template dashboard \
-  --architecture route-colocated \
   --package-manager pnpm \
   --database-driver pg \
   --billing stripe \
-  --auth email-password \
+  --auth email-password+github \
   --email-provider resend \
   --deploy-target vercel \
-  --seed-demo-data no
+  --seed-demo-data yes
 ```
 
-### After generation
+### Run the generated app
 
 ```bash
 cd my-app
 pnpm install
-pnpm lint
-pnpm typecheck
-pnpm test
-pnpm build
 pnpm dev
 ```
 
-Future published usage target:
+> Future: `npx create-launchframe@latest my-app`
 
-```bash
-npx create-launchframe@latest my-app
+## CLI Options
+
+| Option | Choices | Default |
+|---|---|---|
+| `--template` | `blank`, `dashboard` | `blank` |
+| `--package-manager` | `pnpm`, `npm`, `bun` | `pnpm` |
+| `--database-driver` | `pg`, `postgres.js` | `pg` |
+| `--billing` | `stripe`, `polar`, `both`, `none` | `stripe` |
+| `--auth` | `email-password`, `email-password+github` | `email-password` |
+| `--email-provider` | `resend`, `none` | `resend` |
+| `--deploy-target` | `vercel`, `docker` | `vercel` |
+| `--seed-demo-data` | `yes`, `no` | `no` |
+
+Interactive mode supports arrow-key selection in TTY terminals and falls back to text input.
+
+## AI-First Developer Experience
+
+Every generated project ships with configuration for major AI coding tools:
+
+| File | Purpose | Used By |
+|---|---|---|
+| `AGENTS.md` | Tech stack, commands, rules, code patterns | Cursor, Copilot, Codex, Windsurf |
+| `CLAUDE.md` | Imports AGENTS.md + Claude-specific workflow | Claude Code |
+| `.cursor/rules/*.mdc` | Modular auto-activated rules by file pattern | Cursor |
+| `.gemini/GEMINI.md` | Points to AGENTS.md | Gemini Code Assist |
+| `ARCHITECTURE.md` | Directory tree, data flow, extension points | All agents + humans |
+
+Agents get explicit MUST DO / MUST NOT DO rules, a "where to find things" router table, and code pattern examples — so they generate code that matches the project's conventions from the first prompt.
+
+## Architecture
+
+Launchframe uses a three-layer generation model:
+
+```
+templates/base-web     →  shared skeleton (all projects start here)
+presets/*.json         →  curated shapes (blank, dashboard)
+modules/*/             →  composable capabilities (db drivers, billing, auth, deploy, AI DX)
 ```
 
-If you generate a project inside this repository or another parent `pnpm` workspace, use:
+The CLI resolves a dependency graph, validates conflicts, applies file overlays, and runs token replacement — keeping additions predictable instead of a giant pile of `if/else`.
+
+### Modules
+
+| Module | Kind | Description |
+|---|---|---|
+| `quality-baseline` | developer-experience | ESLint, Prettier, Husky |
+| `testing-baseline` | developer-experience | Vitest, Playwright, CI |
+| `ai-dx` | developer-experience | AGENTS.md, CLAUDE.md, .cursor/rules/, ARCHITECTURE.md |
+| `auth-core` | auth | Better Auth baseline |
+| `auth-github` | auth | GitHub OAuth provider |
+| `db-pg` | database | node-postgres driver |
+| `db-postgresjs` | database | postgres.js driver |
+| `billing-stripe` | billing | Stripe checkout + webhooks |
+| `billing-polar` | billing | Polar checkout + webhooks |
+| `email-resend` | email | Resend transactional email |
+| `deploy-docker` | deploy | Dockerfile + .dockerignore |
+| `dashboard-shell` | ui | Dashboard CSS + settings page |
+
+## Verified Outputs
+
+Every generated profile passes lint, typecheck, test, and build:
 
 ```bash
-pnpm install --ignore-workspace
-```
-
-## CLI Experience
-
-Interactive mode supports:
-
-- arrow-key selection in TTY terminals
-- fully non-interactive flags for scripts and CI
-- path-safe project name normalization
-
-Available options:
-
-- template
-- architecture
-- package manager
-- Postgres driver
-- billing provider
-- auth mode
-- email provider
-- deploy target
-- seed demo data
-
-## Supported Options
-
-### Package managers
-
-- `pnpm` recommended
-- `npm` fully supported
-- `bun` available as an experimental option
-
-### Database drivers
-
-- `pg` recommended default
-- `postgres.js` supported
-
-### Billing
-
-- `stripe`
-- `polar`
-- `both`
-- `none`
-
-### Auth
-
-- `email-password`
-- `email-password+github`
-
-### Deploy target
-
-- `vercel`
-- `docker`
-
-## Verification
-
-Reusable local smoke generation:
-
-```bash
-pnpm smoke:blank
-pnpm smoke:dashboard
-pnpm smoke:postgresjs
-```
-
-End-to-end verification:
-
-```bash
+# Generate + verify in one command
 pnpm smoke:verify:blank
 pnpm smoke:verify:dashboard
 pnpm smoke:verify:postgresjs
 ```
 
-These commands generate the app and run:
+The CLI tarball has been packed, installed outside the monorepo, and used to generate a passing project.
 
-- install
-- lint
-- typecheck
-- test
-- build
+## Project Structure
 
-## Why This Exists
-
-Launchframe is optimized for a very specific use case:
-
-- you start multiple Next.js product projects
-- you want a real SaaS baseline, not a toy demo
-- you care about architecture and quality gates from the first commit
-- you still want the output to stay understandable after generation
-
-It is not trying to be:
-
-- a page builder
-- a giant plugin marketplace on day one
-- a universal template for every kind of app
-
-## Packaging
-
-The CLI is publish-ready locally.
-
-Useful commands:
-
-```bash
-pnpm cli:pack
-pnpm cli:publish:dry-run
 ```
-
-What is already verified:
-
-- the CLI tarball builds successfully
-- the tarball can be installed outside the monorepo
-- `npx create-launchframe` works from that installed tarball
-- the generated app still passes runtime verification
-
-## Roadmap
-
-- finish public npm release of `create-launchframe`
-- improve `auth=email-password+github` so missing OAuth env vars do not emit build warnings
-- deepen generated app surfaces without bloating the baseline
-- expand AI-first repo guidance in generated projects
-- build a safe future `upgrade` path from `launchframe.json`
-
-## Architecture
-
-Launchframe is moving from template-copy scaffolding toward a modular assembly model:
-
-- `templates/base-web` provides the shared baseline
-- `presets/*` describe curated starter shapes such as `blank` and `dashboard`
-- `modules/*` provide option-driven capabilities such as DB drivers, billing providers, deploy targets, and UI shells
-
-This matters because it keeps future additions predictable instead of turning the CLI into a pile of `if/else`.
-
-Current examples of real module-driven generation:
-
-- `db-pg`
-- `db-postgresjs`
-- `billing-stripe`
-- `billing-polar`
-- `email-resend`
-- `auth-github`
-- `deploy-docker`
-- `dashboard-shell`
-
-## Design Goals
-
-- opinionated over endlessly configurable
-- production baseline over demo fluff
-- small number of high-confidence choices
-- codebases that are easy for humans and coding agents to extend
-- tested dependency matrix over blind latest-version installs
+├── apps/cli/              # CLI generator (create-launchframe)
+├── apps/docs/             # Documentation site (Fumadocs)
+├── templates/base-web/    # Shared project skeleton
+├── presets/               # blank.json, dashboard.json
+├── modules/               # Composable capabilities
+├── scripts/               # Smoke generation + verification
+├── doc/                   # Spec, module system, release guide
+└── media/                 # SVG previews for README
+```
 
 ## Documentation
 
-- [Specification](./doc/SPEC.md)
-- [Module System](./doc/MODULE_SYSTEM.md)
-- [Release Guide](./doc/RELEASE.md)
+**[Full documentation site →](https://launchframe.dev/docs)**
+
+Every generated project includes `/llms.txt` and `/llms-full.txt` — optimized documentation endpoints for AI coding agents.
+
+Internal docs:
+
+- [Specification](./doc/SPEC.md) — product requirements and design decisions
+- [Module System](./doc/MODULE_SYSTEM.md) — how modules, presets, and tokens work
+- [Release Guide](./doc/RELEASE.md) — packing and publishing the CLI
+
+## Roadmap
+
+- [ ] Publish `create-launchframe` to npm
+- [x] Documentation site with llms.txt
+- [ ] AI features module (Vercel AI SDK, streaming chat, provider abstraction)
+- [ ] Improve social-auth path (suppress warnings when OAuth envs are absent)
+- [ ] Deepen generated product surfaces without bloating the baseline
+- [ ] Safe `upgrade` path from `launchframe.json` manifest
 
 ## Contributing
 
-The repository is still moving quickly, so the main rule is to preserve the verified generation path:
+The repo is moving quickly. Rules are simple:
 
-- keep the starter opinionated
-- prefer incremental module extraction over rewrites
-- do not merge changes that break smoke verification
+- Keep the starter opinionated
+- Prefer incremental module extraction over rewrites
+- Do not merge changes that break smoke verification
 
-Internal implementation backlog lives in [.internal](./.internal/README.md).
+Internal implementation notes: [.internal](./.internal/README.md)
 
 ## License
 
-MIT. The publishable CLI package metadata lives in [apps/cli/package.json](./apps/cli/package.json).
+[MIT](./apps/cli/package.json)
 
-## Notes
+---
 
-- `auth=email-password+github` currently builds cleanly, but Better Auth warns until real `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` are provided.
-- The dependency policy is “tested matrix first”, not “install latest at any cost”.
+**Note:** `auth=email-password+github` will warn at build time until real `GITHUB_CLIENT_ID` and `GITHUB_CLIENT_SECRET` are provided. This is expected — Better Auth is validating the social provider config.

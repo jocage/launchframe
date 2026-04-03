@@ -1,0 +1,8 @@
+{
+  "name": "quality-baseline",
+  "kind": "developer-experience",
+  "description": "ESLint, Prettier, Husky, and repo quality defaults.",
+  "dependsOn": [],
+  "conflictsWith": [],
+  "replaces": []
+}

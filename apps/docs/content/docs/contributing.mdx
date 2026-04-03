@@ -1,0 +1,65 @@
+---
+title: Contributing
+description: How to contribute to Launchframe.
+---
+
+## Rules
+
+The repo is moving quickly. Rules are simple:
+
+1. **Keep the starter opinionated** — don't add options for everything
+2. **Prefer incremental module extraction** over full rewrites
+3. **Do not merge changes that break smoke verification**
+
+## Development setup
+
+```bash
+git clone https://github.com/jocage/launchframe.git
+cd launchframe
+pnpm install
+```
+
+## Smoke testing
+
+Before submitting changes, verify all profiles pass:
+
+```bash
+pnpm smoke:verify:blank
+pnpm smoke:verify:dashboard
+pnpm smoke:verify:postgresjs
+```
+
+Each smoke test generates a project, installs deps, and runs lint, typecheck, test, and build.
+
+## CLI packaging
+
+```bash
+pnpm cli:sync-assets    # sync modules/presets/templates to apps/cli/
+pnpm cli:pack           # pack the CLI tarball
+pnpm cli:publish:dry-run
+```
+
+## Adding a module
+
+1. Create `modules/<name>/module.json` with metadata
+2. Add files to `modules/<name>/files/`
+3. Add the module to relevant presets in `presets/*.json`
+4. Add token replacements if needed
+5. Run smoke tests
+6. Sync CLI assets: `pnpm cli:sync-assets`
+
+## Release process
+
+See the [Release Guide](https://github.com/jocage/launchframe/blob/main/doc/RELEASE.md) for the full checklist.
+
+### Version policy
+
+- **patch**: packaging fixes, docs, non-breaking template fixes
+- **minor**: new scaffold options, new modules, additive generated files
+- **major**: breaking generated output contracts, removed options
+
+## Internal docs
+
+- [Specification](https://github.com/jocage/launchframe/blob/main/doc/SPEC.md)
+- [Module System](https://github.com/jocage/launchframe/blob/main/doc/MODULE_SYSTEM.md)
+- [Release Guide](https://github.com/jocage/launchframe/blob/main/doc/RELEASE.md)

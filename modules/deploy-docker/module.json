@@ -1,0 +1,11 @@
+{
+  "name": "deploy-docker",
+  "kind": "deploy",
+  "description": "Docker deployment baseline with Dockerfile and .dockerignore.",
+  "dependsOn": ["quality-baseline"],
+  "conflictsWith": [],
+  "replaces": [],
+  "template": {
+    "copyFiles": ["Dockerfile", ".dockerignore"]
+  }
+}

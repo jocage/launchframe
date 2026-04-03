@@ -1,0 +1,7 @@
+.next
+.env
+.env.local
+.env.production.local
+.env.test.local
+coverage
+node_modules

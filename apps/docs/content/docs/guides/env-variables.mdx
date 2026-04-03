@@ -1,0 +1,64 @@
+---
+title: Environment Variables
+description: Complete reference for all environment variables in a Launchframe project.
+---
+
+Every generated project includes a `.env.example` file with all required and optional variables.
+
+## Setup
+
+```bash
+cp .env.example .env.local
+```
+
+## Required variables
+
+| Variable | Description |
+|---|---|
+| `DATABASE_URL` | PostgreSQL connection string |
+| `BETTER_AUTH_SECRET` | Random secret for auth token signing |
+| `BETTER_AUTH_URL` | Your app's base URL (e.g. `http://localhost:3000`) |
+
+## Billing (Stripe)
+
+| Variable | Description |
+|---|---|
+| `STRIPE_SECRET_KEY` | Stripe secret key |
+| `STRIPE_PUBLISHABLE_KEY` | Stripe publishable key |
+| `STRIPE_PRICE_ID` | Default subscription price ID |
+| `STRIPE_WEBHOOK_SECRET` | Webhook endpoint secret |
+
+## Billing (Polar)
+
+| Variable | Description |
+|---|---|
+| `POLAR_ACCESS_TOKEN` | Polar API access token |
+| `POLAR_ORGANIZATION_ID` | Your Polar organization ID |
+| `POLAR_WEBHOOK_SECRET` | Webhook endpoint secret |
+
+## Email (Resend)
+
+| Variable | Description |
+|---|---|
+| `RESEND_API_KEY` | Resend API key |
+| `EMAIL_FROM` | Sender email address |
+
+## Auth (GitHub OAuth)
+
+| Variable | Description |
+|---|---|
+| `GITHUB_CLIENT_ID` | GitHub OAuth app client ID |
+| `GITHUB_CLIENT_SECRET` | GitHub OAuth app client secret |
+
+## Access pattern
+
+All env vars are validated through `src/lib/env.ts` using the `t3-env` pattern:
+
+```ts
+import { env } from '@/lib/env';
+
+// Type-safe, validated at build time
+const dbUrl = env.DATABASE_URL;
+```
+
+Never use `process.env` directly in application code.

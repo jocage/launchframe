@@ -1,0 +1,21 @@
+{
+  "name": "launchframe",
+  "private": true,
+  "version": "0.1.0",
+  "license": "MIT",
+  "packageManager": "pnpm@10.18.0",
+  "scripts": {
+    "create": "node apps/cli/bin/create-launchframe.mjs",
+    "cli:sync-assets": "node scripts/sync-cli-package-assets.mjs",
+    "cli:pack": "pnpm --filter create-launchframe pack",
+    "cli:publish:dry-run": "pnpm --filter create-launchframe publish --dry-run --access public --no-git-checks",
+    "smoke:blank": "node scripts/smoke-generate.mjs blank",
+    "smoke:dashboard": "node scripts/smoke-generate.mjs dashboard",
+    "smoke:postgresjs": "node scripts/smoke-generate.mjs postgresjs",
+    "smoke:verify:blank": "node scripts/smoke-verify.mjs blank",
+    "smoke:verify:dashboard": "node scripts/smoke-verify.mjs dashboard",
+    "smoke:verify:postgresjs": "node scripts/smoke-verify.mjs postgresjs",
+    "docs:dev": "pnpm --filter @launchframe/docs dev",
+    "docs:build": "pnpm --filter @launchframe/docs build"
+  }
+}

@@ -1,0 +1,55 @@
+---
+title: Deploy to Vercel
+description: Ship your Launchframe project to Vercel.
+---
+
+## Prerequisites
+
+- [Vercel account](https://vercel.com)
+- PostgreSQL database (Vercel Postgres, Neon, Supabase, etc.)
+
+## Steps
+
+### 1. Push to GitHub
+
+```bash
+git init
+git add .
+git commit -m "Initial commit"
+git remote add origin https://github.com/you/my-saas.git
+git push -u origin main
+```
+
+### 2. Import to Vercel
+
+1. Go to [vercel.com/new](https://vercel.com/new)
+2. Import your repository
+3. Vercel auto-detects the Next.js framework
+
+### 3. Set environment variables
+
+Add all variables from `.env.example` in the Vercel dashboard → Settings → Environment Variables.
+
+Key variables:
+- `DATABASE_URL`
+- `BETTER_AUTH_SECRET`
+- `BETTER_AUTH_URL` (your production domain)
+- `STRIPE_SECRET_KEY` (and other billing vars)
+- `RESEND_API_KEY`
+
+### 4. Deploy
+
+Vercel deploys automatically on every push to `main`.
+
+```bash
+# Manual deploy
+npx vercel --prod
+```
+
+## Database setup
+
+Run migrations against your production database:
+
+```bash
+DATABASE_URL=your-prod-url pnpm db:push
+```

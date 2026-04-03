@@ -1,0 +1,97 @@
+---
+title: Architecture
+description: How Launchframe generates projects — the three-layer model, assembly pipeline, and design decisions.
+---
+
+## Three-layer generation
+
+```
+templates/base-web     →  shared skeleton (all projects start here)
+presets/*.json         →  curated module bundles (blank, dashboard)
+modules/*/             →  composable capabilities
+```
+
+### Base template
+
+`templates/base-web/` is the shared Next.js skeleton. It contains:
+
+- App Router file structure
+- CSS design system with variables and tokens
+- Auth, billing, email page skeletons with token placeholders
+- Shared utilities (`lib/auth.ts`, `lib/db.ts`, `lib/billing.ts`)
+- Environment validation
+- TypeScript configuration
+
+### Presets
+
+JSON files that define a named combination of modules plus token replacement values:
+
+```json
+{
+  "name": "dashboard",
+  "base": "base-web",
+  "modules": ["quality-baseline", "testing-baseline", "auth-core", "db-pg", "billing-stripe", "email-resend", "dashboard-shell", "ai-dx"],
+  "tokenReplacements": { "...": "..." }
+}
+```
+
+### Modules
+
+Self-contained units that contribute files and token values. See [Module System](/docs/modules) for details.
+
+## Assembly pipeline
+
+When the CLI runs:
+
+1. **Load base** — copy `templates/base-web/` as the starting point
+2. **Resolve preset** — read `presets/<name>.json` for the module list
+3. **Override from CLI** — swap modules based on flags (e.g., `--database-driver postgres.js` swaps `db-pg` → `db-postgresjs`)
+4. **Validate dependencies** — check all `dependsOn` and `conflictsWith` rules
+5. **Apply token replacements** — replace `__TOKEN_NAME__` placeholders in all files
+6. **Copy module files** — overlay files from `modules/<name>/files/`
+7. **Prune unused files** — remove files belonging to excluded modules
+8. **Write manifest** — generate `launchframe.json` describing the installed configuration
+
+## Design decisions
+
+### Why token replacement instead of AST transforms?
+
+Token replacement is simple, predictable, and easy for humans and AI agents to reason about. AST transforms are powerful but brittle — a single parser version mismatch breaks everything.
+
+### Why modules instead of feature flags?
+
+Modules are file-based and declarative. Feature flags require runtime checks scattered throughout the codebase. Modules keep the generated project clean — unused code never ships.
+
+### Why presets?
+
+Presets are the user-facing unit. Users pick "blank" or "dashboard", not a list of modules. Presets make the CLI simple while modules make the internals composable.
+
+## Repository structure
+
+```
+launchframe/
+├── apps/
+│   ├── cli/                # CLI generator (create-launchframe)
+│   └── docs/               # Documentation site (this site)
+├── templates/
+│   └── base-web/           # Shared project skeleton
+├── presets/
+│   ├── blank.json          # Minimal preset
+│   └── dashboard.json      # Dashboard preset
+├── modules/
+│   ├── auth-core/          # Better Auth baseline
+│   ├── auth-github/        # GitHub OAuth
+│   ├── db-pg/              # node-postgres driver
+│   ├── db-postgresjs/      # postgres.js driver
+│   ├── billing-stripe/     # Stripe billing
+│   ├── billing-polar/      # Polar billing
+│   ├── email-resend/       # Resend email
+│   ├── deploy-docker/      # Docker deployment
+│   ├── dashboard-shell/    # Dashboard UI layer
+│   ├── quality-baseline/   # ESLint, Prettier, Husky
+│   ├── testing-baseline/   # Vitest, Playwright
+│   └── ai-dx/              # AI agent rules
+├── scripts/                # Smoke generation + verification
+├── doc/                    # Internal spec and design docs
+└── media/                  # SVG previews for README
+```

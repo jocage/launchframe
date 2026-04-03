@@ -1,0 +1,20 @@
+{
+  "name": "auth-github",
+  "kind": "auth",
+  "description": "GitHub OAuth provider for Better Auth.",
+  "dependsOn": ["auth-core"],
+  "conflictsWith": [],
+  "replaces": [],
+  "template": {
+    "tokenReplacements": {
+      "__AUTH_PROVIDER_ENV_EXAMPLE__": "GITHUB_CLIENT_ID=github_oauth_client_id\nGITHUB_CLIENT_SECRET=github_oauth_client_secret",
+      "__AUTH_PROVIDER_ENV_SCHEMA__": "  GITHUB_CLIENT_ID: z.string().min(1).optional(),\n  GITHUB_CLIENT_SECRET: z.string().min(1).optional(),",
+      "__AUTH_PROVIDER_ENV_VALUES__": "    GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,\n    GITHUB_CLIENT_SECRET: process.env.GITHUB_CLIENT_SECRET,",
+      "__AUTH_SOCIAL_PROVIDERS_BLOCK__": ",\n  socialProviders: {\n    github: {\n      clientId: env.GITHUB_CLIENT_ID ?? \"\",\n      clientSecret: env.GITHUB_CLIENT_SECRET ?? \"\"\n    }\n  }",
+      "__AUTH_SOCIAL_BUTTON_HANDLER__": "\n  async function handleGithubSignIn() {\n    setIsPending(true);\n    setError(null);\n\n    try {\n      const result = await authClient.signIn.social({\n        provider: \"github\",\n        callbackURL: \"/dashboard\"\n      });\n\n      if (result.error) {\n        setError(result.error.message ?? \"GitHub sign-in failed.\");\n      }\n    } catch {\n      setError(\"GitHub sign-in failed.\");\n    } finally {\n      setIsPending(false);\n    }\n  }\n",
+      "__AUTH_SOCIAL_BUTTON__": "\n      <div className=\"auth-separator\" aria-hidden=\"true\">\n        <span>or continue with</span>\n      </div>\n\n      <button\n        type=\"button\"\n        className=\"auth-social-button\"\n        onClick={() => {\n          void handleGithubSignIn();\n        }}\n        disabled={isPending}\n      >\n        {isPending ? \"Working...\" : \"Continue with GitHub\"}\n      </button>",
+      "__AUTH_SOCIAL_TEST_ASSERTION__": "\n    expect(screen.getByRole(\"button\", { name: /continue with github/i })).toBeTruthy();",
+      "__AUTH_LLMS_EXTRA__": ", GitHub OAuth"
+    }
+  }
+}

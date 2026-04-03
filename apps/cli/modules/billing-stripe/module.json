@@ -1,0 +1,23 @@
+{
+  "name": "billing-stripe",
+  "kind": "billing",
+  "description": "Stripe billing provider integration.",
+  "dependsOn": ["auth-core"],
+  "conflictsWith": [],
+  "replaces": [],
+  "template": {
+    "billingProviders": ["stripe"],
+    "packageDependencies": [
+      "    \"stripe\": \"18.5.0\","
+    ],
+    "billing": {
+      "imports": [
+        "import { StripeBillingProvider } from \"./providers/stripe\";"
+      ],
+      "factories": [
+        "  stripe: () => new StripeBillingProvider(),"
+      ],
+      "stripeWebhookRouteBody": "  const provider = getBillingProvider(\"stripe\");\n  const rawBody = await request.text();\n\n  await provider.handleWebhook({\n    headers: request.headers,\n    rawBody\n  });\n\n  return Response.json({ received: true });"
+    }
+  }
+}

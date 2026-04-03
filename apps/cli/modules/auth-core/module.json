@@ -1,0 +1,8 @@
+{
+  "name": "auth-core",
+  "kind": "auth",
+  "description": "Better Auth baseline with protected routes and auth pages.",
+  "dependsOn": ["quality-baseline", "testing-baseline"],
+  "conflictsWith": [],
+  "replaces": []
+}

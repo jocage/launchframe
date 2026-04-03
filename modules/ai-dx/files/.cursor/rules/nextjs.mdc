@@ -1,0 +1,58 @@
+---
+description: Next.js App Router patterns and conventions
+globs: src/**/*.tsx, src/**/*.ts
+alwaysApply: false
+---
+
+# Next.js Patterns
+
+Read bundled docs at `node_modules/next/dist/docs/` before writing Next.js code.
+
+## Server Components (default)
+
+```tsx
+import { getSession } from "@/lib/auth-session";
+
+export default async function Page() {
+  const session = await getSession();
+  return <main>{/* render with session data */}</main>;
+}
+```
+
+## Client Components (opt-in)
+
+Only when hooks, event handlers, or browser APIs are needed:
+
+```tsx
+"use client";
+
+import { useState } from "react";
+
+export function Counter() {
+  const [count, setCount] = useState(0);
+  return <button onClick={() => setCount(count + 1)}>{count}</button>;
+}
+```
+
+## API Routes
+
+```tsx
+import { NextResponse } from "next/server";
+
+export async function POST(request: Request) {
+  const body = await request.json();
+  return NextResponse.json({ ok: true });
+}
+```
+
+## Route Protection
+
+`proxy.ts` handles auth redirects at the edge. To protect a new route, add it to both the condition and the matcher array in that file.
+
+## Metadata
+
+Use the `metadata` export in `layout.tsx` or `page.tsx`:
+
+```tsx
+export const metadata = { title: "Page Title" };
+```

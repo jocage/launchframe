@@ -1,0 +1,45 @@
+---
+title: Blank Template
+description: Minimal SaaS baseline with auth, billing, email, and database ready.
+---
+
+The `blank` template is the minimal starting point. It gives you all the infrastructure with a clean, uncluttered UI.
+
+## What's generated
+
+```
+src/
+├── app/
+│   ├── page.tsx          # Landing page
+│   ├── sign-in/page.tsx  # Auth: sign in
+│   ├── sign-up/page.tsx  # Auth: sign up
+│   ├── dashboard/page.tsx # Protected dashboard
+│   ├── billing/page.tsx  # Billing management
+│   └── email/page.tsx    # Email demo
+├── lib/
+│   ├── auth.ts           # Better Auth config
+│   ├── db.ts             # Drizzle client
+│   ├── billing.ts        # Billing provider
+│   └── email.ts          # Email client
+└── db/
+    ├── schema.ts         # User + session schema
+    └── seed.ts           # Demo data seeder
+```
+
+## Modules included
+
+The `blank` preset resolves to:
+
+- `quality-baseline` — ESLint, Prettier, Husky
+- `testing-baseline` — Vitest, Playwright
+- `auth-core` — Better Auth baseline
+- `db-pg` or `db-postgresjs` — based on your CLI choice
+- `billing-stripe` or `billing-polar` — based on your CLI choice
+- `email-resend` — Resend integration
+- `ai-dx` — AI agent configuration files
+
+## When to use
+
+- Starting a new product from scratch
+- You want full control over the UI
+- You'll build your own dashboard and page layouts

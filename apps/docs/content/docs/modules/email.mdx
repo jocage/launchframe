@@ -1,0 +1,43 @@
+---
+title: Email
+description: Resend integration for transactional email with templates.
+---
+
+Launchframe uses [Resend](https://resend.com) for transactional email — welcome emails, password resets, notifications.
+
+## Module
+
+### `email-resend`
+
+Provides Resend client initialization, email sending utilities, and a demo page.
+
+```bash
+npx create-launchframe my-app --email-provider resend
+npx create-launchframe my-app --email-provider none
+```
+
+## Key files
+
+| File | Purpose |
+|---|---|
+| `src/lib/email.ts` | Resend client + send utility |
+| `src/app/email/page.tsx` | Email demo / management page |
+
+## Usage
+
+```ts
+import { sendEmail } from '@/lib/email';
+
+await sendEmail({
+  to: 'user@example.com',
+  subject: 'Welcome!',
+  html: '<p>Thanks for signing up.</p>',
+});
+```
+
+## Environment
+
+```ini
+RESEND_API_KEY=re_...
+EMAIL_FROM=onboarding@yourdomain.com
+```

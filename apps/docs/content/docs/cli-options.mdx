@@ -1,0 +1,63 @@
+---
+title: CLI Options
+description: Full reference for create-launchframe CLI flags.
+---
+
+## Usage
+
+```bash
+npx create-launchframe <project-name> [options]
+```
+
+If no options are provided, the CLI runs in **interactive mode** with arrow-key selection.
+
+## Options
+
+| Option | Choices | Default | Description |
+|---|---|---|---|
+| `--template` | `blank`, `dashboard` | `blank` | Project template |
+| `--package-manager` | `pnpm`, `npm`, `bun` | `pnpm` | Package manager |
+| `--database-driver` | `pg`, `postgres.js` | `pg` | PostgreSQL client driver |
+| `--billing` | `stripe`, `polar`, `both`, `none` | `stripe` | Billing provider |
+| `--auth` | `email-password`, `email-password+github` | `email-password` | Auth providers |
+| `--email-provider` | `resend`, `none` | `resend` | Email provider |
+| `--deploy-target` | `vercel`, `docker` | `vercel` | Deploy target |
+| `--seed-demo-data` | `yes`, `no` | `no` | Seed demo data after generation |
+
+## Examples
+
+### Dashboard with all defaults
+
+```bash
+npx create-launchframe my-app --template dashboard
+```
+
+### Minimal blank project
+
+```bash
+npx create-launchframe my-app --template blank --billing none --email-provider none
+```
+
+### CI / scripting (fully non-interactive)
+
+```bash
+npx create-launchframe my-app \
+  --template dashboard \
+  --package-manager pnpm \
+  --database-driver pg \
+  --billing stripe \
+  --auth email-password+github \
+  --email-provider resend \
+  --deploy-target docker \
+  --seed-demo-data yes
+```
+
+## What happens during generation
+
+1. The CLI loads the selected **base template** (`templates/base-web/`)
+2. Resolves the **preset** (`presets/blank.json` or `presets/dashboard.json`)
+3. Resolves **modules** based on your CLI options (e.g., `db-pg`, `billing-stripe`)
+4. Validates dependency graph and detects conflicts
+5. Applies file overlays and token replacements
+6. Writes a `launchframe.json` manifest describing what was installed
+7. Optionally runs `pnpm install` and seeds demo data

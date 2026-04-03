@@ -1,0 +1,48 @@
+---
+description: Drizzle ORM database patterns and migration workflow
+globs: src/db/**
+alwaysApply: false
+---
+
+# Database (Drizzle ORM + PostgreSQL)
+
+## Connection
+
+`src/db/index.ts` exports `db`. It is `server-only` — never import in client components.
+
+## Schema
+
+Define tables in `src/db/schema/`, re-export from `src/db/schema/index.ts`.
+
+```ts
+import { pgTable, text, timestamp, uuid } from "drizzle-orm/pg-core";
+
+export const widgets = pgTable("widgets", {
+  id: uuid("id").primaryKey().defaultRandom(),
+  name: text("name").notNull(),
+  createdAt: timestamp("created_at", { withTimezone: true }).defaultNow().notNull()
+});
+```
+
+## Queries
+
+```ts
+import { db } from "@/db";
+import { widgets } from "@/db/schema";
+import { eq } from "drizzle-orm";
+
+const all = await db.select().from(widgets);
+const one = await db.select().from(widgets).where(eq(widgets.id, id));
+await db.insert(widgets).values({ name: "New" });
+```
+
+## Migration Workflow
+
+1. Edit or create schema files
+2. `pnpm db:generate` — creates SQL migration
+3. `pnpm db:migrate` — applies to database
+4. `pnpm db:push` — alternative: push without migration files (dev only)
+
+## Seeds
+
+Add seed logic in `src/db/seeds/index.ts`, run with `pnpm db:seed`.

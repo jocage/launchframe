@@ -1,0 +1,64 @@
+---
+title: Database
+description: PostgreSQL + Drizzle ORM with type-safe schema, migrations, and seeding.
+---
+
+Launchframe uses [Drizzle ORM](https://orm.drizzle.team/) with PostgreSQL. Two driver options are available.
+
+## Driver modules
+
+### `db-pg` (default)
+
+Uses the `pg` (node-postgres) driver. Most familiar, mainstream, and compatible.
+
+### `db-postgresjs`
+
+Uses `postgres.js` — a modern, high-performance driver with a cleaner API. Choose this if you prefer it.
+
+Select your driver with `--database-driver`:
+
+```bash
+npx create-launchframe my-app --database-driver pg
+npx create-launchframe my-app --database-driver postgres.js
+```
+
+## Key files
+
+| File | Purpose |
+|---|---|
+| `src/lib/db.ts` | Drizzle client initialization |
+| `src/db/schema.ts` | Database schema (users, sessions, accounts) |
+| `src/db/seed.ts` | Demo data seeder |
+| `drizzle.config.ts` | Drizzle Kit configuration |
+
+## Schema
+
+The default schema includes Better Auth tables:
+
+```ts
+// src/db/schema.ts
+export const user = pgTable('user', {
+  id: text('id').primaryKey(),
+  email: text('email').notNull().unique(),
+  name: text('name'),
+  emailVerified: boolean('email_verified').notNull().default(false),
+  image: text('image'),
+  createdAt: timestamp('created_at').notNull().defaultNow(),
+  updatedAt: timestamp('updated_at').notNull().defaultNow(),
+});
+```
+
+## Commands
+
+```bash
+pnpm db:push      # Push schema to database (dev)
+pnpm db:migrate   # Run migrations (production)
+pnpm db:seed      # Seed demo data
+pnpm db:studio    # Open Drizzle Studio GUI
+```
+
+## Environment
+
+```ini
+DATABASE_URL=postgresql://user:password@localhost:5432/my_app
+```

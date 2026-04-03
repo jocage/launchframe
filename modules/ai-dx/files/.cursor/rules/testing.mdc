@@ -1,0 +1,55 @@
+---
+description: Vitest unit tests and Playwright E2E test conventions
+globs: src/**/*.test.*, tests/**
+alwaysApply: false
+---
+
+# Testing
+
+## Unit Tests (Vitest)
+
+Location: `src/**/*.test.{ts,tsx}` — colocated next to the file they test.
+
+```ts
+import { describe, it, expect } from "vitest";
+
+describe("myFunction", () => {
+  it("returns expected value", () => {
+    expect(myFunction("input")).toBe("output");
+  });
+});
+```
+
+For React components, use `@testing-library/react`:
+
+```tsx
+import { render, screen } from "@testing-library/react";
+
+it("renders heading", () => {
+  render(<MyComponent />);
+  expect(screen.getByRole("heading")).toHaveTextContent("Title");
+});
+```
+
+Run: `pnpm test` (single run) or `pnpm test:watch` (watch mode).
+
+## E2E Tests (Playwright)
+
+Location: `tests/e2e/*.spec.ts`
+
+```ts
+import { test, expect } from "@playwright/test";
+
+test("home page loads", async ({ page }) => {
+  await page.goto("/");
+  await expect(page.getByRole("heading")).toBeVisible();
+});
+```
+
+Run: `pnpm test:e2e` (headless) or `pnpm test:e2e:headed` (with browser).
+
+Playwright auto-starts the dev server via `playwright.config.ts`.
+
+## Pre-commit
+
+The Husky pre-commit hook runs `pnpm lint-staged && pnpm typecheck`. Tests run on pre-push.

@@ -1,0 +1,30 @@
+---
+title: Changelog
+description: Release history for Launchframe.
+---
+
+## v0.1.0 (Unreleased)
+
+Initial release of `create-launchframe`.
+
+### Features
+
+- **Templates**: `blank` and `dashboard` starter templates
+- **Module system**: composable modules with dependency resolution
+- **Auth**: Better Auth with email/password and optional GitHub OAuth
+- **Database**: PostgreSQL + Drizzle ORM (pg and postgres.js drivers)
+- **Billing**: Stripe and Polar provider abstraction
+- **Email**: Resend transactional email
+- **Testing**: Vitest + Playwright with CI configuration
+- **Quality**: ESLint 9, Prettier, Husky + lint-staged
+- **AI DX**: AGENTS.md, CLAUDE.md, .cursor/rules, ARCHITECTURE.md for AI agents
+- **Deploy**: Vercel (default) and Docker multi-stage builds
+- **CI/CD**: GitHub Actions workflow for lint, typecheck, test, build
+- **CLI**: Interactive and non-interactive modes, package manager selection
+
+### Verified outputs
+
+All generated profiles pass lint, typecheck, test, and build:
+- `blank + pg + stripe + resend`
+- `dashboard + pg + stripe + resend`
+- `blank + postgres.js + none + none`
