@@ -76,25 +76,30 @@ Visit [http://localhost:3000](http://localhost:3000). You should see the landing
 ```
 my-saas/
 ├── src/
-│   ├── app/              # Next.js App Router pages
-│   │   ├── page.tsx      # Landing / marketing page
-│   │   ├── dashboard/    # Protected dashboard
-│   │   ├── settings/     # Account settings
-│   │   ├── billing/      # Billing management
-│   │   ├── email/        # Email demo
-│   │   ├── sign-in/      # Authentication
+│   ├── app/                # Next.js App Router pages
+│   │   ├── page.tsx        # Landing / marketing page
+│   │   ├── dashboard/      # Protected dashboard
+│   │   ├── settings/       # Account settings (dashboard template)
+│   │   ├── billing/        # Billing management
+│   │   ├── email/          # Email demo
+│   │   ├── sign-in/        # Authentication
 │   │   └── sign-up/
-│   ├── lib/              # Shared utilities
-│   │   ├── auth.ts       # Better Auth setup
-│   │   ├── db.ts         # Drizzle client
-│   │   ├── billing.ts    # Billing provider
-│   │   └── email.ts      # Email client
+│   ├── components/
+│   │   └── auth/           # Auth form component
+│   ├── lib/
+│   │   ├── auth.ts         # Better Auth setup
+│   │   ├── auth-client.ts  # Client-side auth
+│   │   ├── auth-session.ts # Session helper
+│   │   ├── env.ts          # Environment validation
+│   │   ├── billing/        # Billing provider abstraction
+│   │   └── email/          # Email client + templates
 │   └── db/
-│       ├── schema.ts     # Drizzle schema
-│       └── seed.ts       # Seed script
-├── drizzle.config.ts     # Drizzle configuration
-├── .env.example          # Env template
-├── AGENTS.md             # AI agent rules
-├── ARCHITECTURE.md       # Project architecture
-└── launchframe.json      # Generation manifest
+│       ├── index.ts        # Drizzle client
+│       ├── schema/         # Drizzle schema (auth, projects)
+│       └── seeds/          # Seed script
+├── drizzle.config.ts       # Drizzle configuration
+├── .env.example            # Env template
+├── AGENTS.md               # AI agent rules
+├── ARCHITECTURE.md          # Project architecture
+└── launchframe.json        # Generation manifest
 ```

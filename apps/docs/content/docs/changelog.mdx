@@ -3,7 +3,24 @@ title: Changelog
 description: Release history for Launchframe.
 ---
 
-## v0.1.0 (Unreleased)
+## v0.2.0
+
+Published to npm as `create-launchframe@0.2.0`.
+
+### Features
+
+- **Selective AI DX**: split `ai-dx` into `ai-dx` (base), `ai-dx-cursor`, `ai-dx-claude`, `ai-dx-gemini`
+- **`--ai-tools` flag**: choose which AI tool configs to include (`all`, `none`, or comma-separated)
+- **Auth redesign**: Fennec-style auth form with sign-in/sign-up tabs, icon inputs, password toggle
+- **Pricing section**: dashboard landing page now includes a 3-tier pricing section
+- **Blank simplified**: blank template now generates a clean header nav + hero landing page
+
+### Improvements
+
+- Interactive multi-select prompt for AI tools (checkbox mode in TTY, comma-separated fallback)
+- `launchframe.json` manifest now records `aiTools` selection
+
+## v0.1.0
 
 Initial release of `create-launchframe`.
 
@@ -17,7 +34,7 @@ Initial release of `create-launchframe`.
 - **Email**: Resend transactional email
 - **Testing**: Vitest + Playwright with CI configuration
 - **Quality**: ESLint 9, Prettier, Husky + lint-staged
-- **AI DX**: AGENTS.md, CLAUDE.md, .cursor/rules, ARCHITECTURE.md for AI agents
+- **AI DX**: AGENTS.md, ARCHITECTURE.md, CLAUDE.md, .cursor/rules, .gemini for AI agents
 - **Deploy**: Vercel (default) and Docker multi-stage builds
 - **CI/CD**: GitHub Actions workflow for lint, typecheck, test, build
 - **CLI**: Interactive and non-interactive modes, package manager selection

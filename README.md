@@ -29,7 +29,7 @@ Launchframe sits in the middle — opinionated enough to ship, structured enough
 | **Testing** | Vitest 3.2 (unit) + Playwright 1.55 (E2E) |
 | **Quality** | ESLint 9 flat config, Prettier, Husky + lint-staged pre-commit |
 | **CI/CD** | GitHub Actions — lint, typecheck, test, build |
-| **AI DX** | `AGENTS.md`, `CLAUDE.md`, `.cursor/rules/*.mdc`, `.gemini/`, `ARCHITECTURE.md` |
+| **AI DX** | `AGENTS.md` + `ARCHITECTURE.md` (always); `CLAUDE.md`, `.cursor/rules/*.mdc`, `.gemini/` (via `--ai-tools`) |
 | **Deploy** | Vercel (default) or Docker |
 
 ## Templates

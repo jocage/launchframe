@@ -9,8 +9,8 @@ Launchframe is an opinionated SaaS starter for **Next.js 16**. One CLI command s
 
 Two templates ship today:
 
-- **blank** — minimal SaaS baseline: landing page, auth, billing, email, database
-- **dashboard** — product-facing starter: marketing page, demo dashboard, polished UI, dark design system
+- **blank** — minimal SaaS baseline: header nav, hero landing, auth, billing, email, database
+- **dashboard** — product-facing starter: marketing page with pricing, demo dashboard, polished UI, dark design system
 
 ## Prerequisites
 
@@ -24,7 +24,7 @@ Two templates ship today:
 npx create-launchframe my-app
 ```
 
-The interactive wizard walks you through template, database driver, billing provider, auth provider, email, and deploy target.
+The interactive wizard walks you through template, database driver, billing provider, auth provider, email, deploy target, and AI tools.
 
 ## Non-interactive (CI-friendly)
 
@@ -36,7 +36,8 @@ npx create-launchframe my-app \
   --auth email-password+github \
   --email-provider resend \
   --deploy-target docker \
-  --package-manager pnpm
+  --package-manager pnpm \
+  --ai-tools cursor,claude
 ```
 
 ## Run
@@ -64,7 +65,7 @@ Every generated project ships with:
 | Testing | Vitest (unit) + Playwright (E2E) |
 | Quality | ESLint 9, Prettier, Husky + lint-staged |
 | CI/CD | GitHub Actions |
-| AI DX | AGENTS.md, CLAUDE.md, .cursor/rules, ARCHITECTURE.md |
+| AI DX | AGENTS.md + ARCHITECTURE.md (always); CLAUDE.md, .cursor/rules, .gemini (via `--ai-tools`) |
 | Deploy | Vercel or Docker |
 
 ## Next Steps

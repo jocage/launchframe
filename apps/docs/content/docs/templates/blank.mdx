@@ -1,29 +1,35 @@
 ---
 title: Blank Template
-description: Minimal SaaS baseline with auth, billing, email, and database ready.
+description: Minimal SaaS baseline — clean landing page with auth, billing, email, and database wired up.
 ---
 
-The `blank` template is the minimal starting point. It gives you all the infrastructure with a clean, uncluttered UI.
+The `blank` template is the minimal starting point. It gives you all the infrastructure with a clean, uncluttered UI — a header nav with sign-in link and a hero section.
 
 ## What's generated
 
 ```
 src/
 ├── app/
-│   ├── page.tsx          # Landing page
-│   ├── sign-in/page.tsx  # Auth: sign in
-│   ├── sign-up/page.tsx  # Auth: sign up
-│   ├── dashboard/page.tsx # Protected dashboard
-│   ├── billing/page.tsx  # Billing management
-│   └── email/page.tsx    # Email demo
+│   ├── page.tsx            # Landing page (header + hero)
+│   ├── sign-in/page.tsx    # Auth: sign in (Fennec-style form)
+│   ├── sign-up/page.tsx    # Auth: sign up
+│   ├── dashboard/page.tsx  # Protected dashboard
+│   ├── billing/page.tsx    # Billing management
+│   └── email/page.tsx      # Email demo
+├── components/
+│   └── auth/
+│       └── email-auth-form.tsx  # Shared auth form
 ├── lib/
-│   ├── auth.ts           # Better Auth config
-│   ├── db.ts             # Drizzle client
-│   ├── billing.ts        # Billing provider
-│   └── email.ts          # Email client
+│   ├── auth.ts             # Better Auth config
+│   ├── auth-client.ts      # Client-side auth
+│   ├── auth-session.ts     # Session helper
+│   ├── env.ts              # Environment validation
+│   ├── billing/            # Billing provider abstraction
+│   └── email/              # Email client + templates
 └── db/
-    ├── schema.ts         # User + session schema
-    └── seed.ts           # Demo data seeder
+    ├── index.ts            # Drizzle client
+    ├── schema/             # User + session + project schema
+    └── seeds/              # Demo data seeder
 ```
 
 ## Modules included
@@ -36,7 +42,7 @@ The `blank` preset resolves to:
 - `db-pg` or `db-postgresjs` — based on your CLI choice
 - `billing-stripe` or `billing-polar` — based on your CLI choice
 - `email-resend` — Resend integration
-- `ai-dx` — AI agent configuration files
+- `ai-dx` + selected sub-modules — based on `--ai-tools`
 
 ## When to use
 

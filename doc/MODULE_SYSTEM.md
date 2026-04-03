@@ -47,9 +47,14 @@ modules/
   billing-stripe/
   billing-polar/
   email-resend/
+  deploy-docker/
   dashboard-shell/
   quality-baseline/
   testing-baseline/
+  ai-dx/
+  ai-dx-cursor/
+  ai-dx-claude/
+  ai-dx-gemini/
 presets/
   blank.json
   dashboard.json

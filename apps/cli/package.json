@@ -1,6 +1,6 @@
 {
   "name": "create-launchframe",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Opinionated SaaS starter CLI for Next.js 16.",
   "type": "module",
   "license": "MIT",

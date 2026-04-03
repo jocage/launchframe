@@ -225,13 +225,11 @@ Minimal starting point for a real product.
 
 Expected content:
 
-- minimal marketing or home page
-- auth pages
-- protected app shell
-- settings page
+- header nav with sign-in link + hero landing page
+- auth pages (Fennec-style form with tabs, icons, password toggle)
+- protected dashboard route
 - billing page
-- empty dashboard state
-- email examples
+- email demo page
 - responsive layout
 
 ### 9.2 `dashboard`
@@ -280,28 +278,26 @@ The CLI should scaffold a project from templates and selected options.
 
 - project name
 - template: `blank` or `dashboard`
-- architecture: `route-colocated`, `feature-first`, or `monorepo-ready`
 - package manager: `pnpm`, `npm`, or `bun`
-- database provider: `postgres`, `neon`, or `supabase`
 - Drizzle driver: `pg` or `postgres.js`
 - billing provider: `stripe`, `polar`, `both`, or `none`
-- auth providers: `email-password`, `github`, `google`
+- auth mode: `email-password` or `email-password+github`
 - email provider: `resend` or `none`
 - deploy target: `vercel` or `docker`
 - seed demo data: `yes` or `no`
+- AI tools (multi-select): `cursor`, `claude`, `gemini`, `copilot` (default: all)
 
 ### Recommended Defaults
 
 - template: `blank`
-- architecture: `route-colocated`
 - package manager: `pnpm`
-- database provider: `postgres`
 - Drizzle driver: `pg`
 - billing provider: `stripe`
-- auth providers: `email-password` + `github`
+- auth mode: `email-password+github`
 - email provider: `resend`
 - deploy target: `vercel`
 - seed demo data: `no`
+- AI tools: `all`
 
 ### Package Manager Strategy
 

@@ -9,7 +9,7 @@ description: Full reference for create-launchframe CLI flags.
 npx create-launchframe <project-name> [options]
 ```
 
-If no options are provided, the CLI runs in **interactive mode** with arrow-key selection.
+If no options are provided, the CLI runs in **interactive mode** with arrow-key selection (single-select) and checkbox selection (multi-select).
 
 ## Options
 
@@ -23,6 +23,7 @@ If no options are provided, the CLI runs in **interactive mode** with arrow-key 
 | `--email-provider` | `resend`, `none` | `resend` | Email provider |
 | `--deploy-target` | `vercel`, `docker` | `vercel` | Deploy target |
 | `--seed-demo-data` | `yes`, `no` | `no` | Seed demo data after generation |
+| `--ai-tools` | `all`, `none`, or comma-separated: `cursor`, `claude`, `gemini`, `copilot` | `all` | AI tool configuration files to include |
 
 ## Examples
 
@@ -38,6 +39,12 @@ npx create-launchframe my-app --template dashboard
 npx create-launchframe my-app --template blank --billing none --email-provider none
 ```
 
+### Only Claude Code AI config
+
+```bash
+npx create-launchframe my-app --ai-tools claude
+```
+
 ### CI / scripting (fully non-interactive)
 
 ```bash
@@ -49,14 +56,15 @@ npx create-launchframe my-app \
   --auth email-password+github \
   --email-provider resend \
   --deploy-target docker \
-  --seed-demo-data yes
+  --seed-demo-data yes \
+  --ai-tools cursor,claude
 ```
 
 ## What happens during generation
 
 1. The CLI loads the selected **base template** (`templates/base-web/`)
 2. Resolves the **preset** (`presets/blank.json` or `presets/dashboard.json`)
-3. Resolves **modules** based on your CLI options (e.g., `db-pg`, `billing-stripe`)
+3. Resolves **modules** based on your CLI options (e.g., `db-pg`, `billing-stripe`, `ai-dx-cursor`)
 4. Validates dependency graph and detects conflicts
 5. Applies file overlays and token replacements
 6. Writes a `launchframe.json` manifest describing what was installed

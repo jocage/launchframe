@@ -31,7 +31,10 @@ Named bundles of modules. `blank` and `dashboard` are presets — they list whic
 |---|---|---|
 | `quality-baseline` | developer-experience | ESLint 9, Prettier, Husky + lint-staged |
 | `testing-baseline` | developer-experience | Vitest 3.2, Playwright 1.55, CI config |
-| `ai-dx` | developer-experience | AGENTS.md, CLAUDE.md, .cursor/rules, ARCHITECTURE.md |
+| `ai-dx` | developer-experience | AGENTS.md, ARCHITECTURE.md (always included) |
+| `ai-dx-cursor` | developer-experience | .cursor/rules/*.mdc (via `--ai-tools cursor`) |
+| `ai-dx-claude` | developer-experience | CLAUDE.md (via `--ai-tools claude`) |
+| `ai-dx-gemini` | developer-experience | .gemini/GEMINI.md (via `--ai-tools gemini`) |
 | `auth-core` | auth | Better Auth baseline (email/password, sessions) |
 | `auth-github` | auth | GitHub OAuth provider |
 | `db-pg` | database | node-postgres driver for Drizzle |
@@ -74,7 +77,7 @@ When you run `create-launchframe`:
 
 1. Load the selected **base** template
 2. Resolve the selected **preset**
-3. Add/remove modules from explicit CLI options
+3. Add/remove modules from explicit CLI options (including `--ai-tools`)
 4. Validate dependencies and detect conflicts
 5. Assemble files and token replacements in deterministic order
 6. Write the final project + `launchframe.json` manifest
@@ -84,3 +87,4 @@ When you run `create-launchframe`:
 - `db-pg` conflicts with `db-postgresjs` — you pick one
 - `billing-stripe` and `billing-polar` can coexist (both selected via `--billing both`)
 - Absence of a module is valid — `--email-provider none` simply omits `email-resend`
+- AI DX sub-modules (`ai-dx-cursor`, `ai-dx-claude`, `ai-dx-gemini`) are independently selectable via `--ai-tools`

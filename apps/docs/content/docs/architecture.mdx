@@ -18,7 +18,7 @@ modules/*/             →  composable capabilities
 - App Router file structure
 - CSS design system with variables and tokens
 - Auth, billing, email page skeletons with token placeholders
-- Shared utilities (`lib/auth.ts`, `lib/db.ts`, `lib/billing.ts`)
+- Shared utilities (`lib/auth.ts`, `lib/env.ts`, `lib/billing/`, `lib/email/`)
 - Environment validation
 - TypeScript configuration
 
@@ -30,10 +30,12 @@ JSON files that define a named combination of modules plus token replacement val
 {
   "name": "dashboard",
   "base": "base-web",
-  "modules": ["quality-baseline", "testing-baseline", "auth-core", "db-pg", "billing-stripe", "email-resend", "dashboard-shell", "ai-dx"],
+  "modules": ["quality-baseline", "testing-baseline", "auth-core", "dashboard-shell"],
   "tokenReplacements": { "...": "..." }
 }
 ```
+
+AI DX modules (`ai-dx`, `ai-dx-cursor`, `ai-dx-claude`, `ai-dx-gemini`) are resolved dynamically from `--ai-tools` rather than hardcoded in presets.
 
 ### Modules
 
@@ -45,7 +47,7 @@ When the CLI runs:
 
 1. **Load base** — copy `templates/base-web/` as the starting point
 2. **Resolve preset** — read `presets/<name>.json` for the module list
-3. **Override from CLI** — swap modules based on flags (e.g., `--database-driver postgres.js` swaps `db-pg` → `db-postgresjs`)
+3. **Override from CLI** — swap modules based on flags (e.g., `--database-driver postgres.js` swaps `db-pg` → `db-postgresjs`; `--ai-tools cursor` adds `ai-dx-cursor`)
 4. **Validate dependencies** — check all `dependsOn` and `conflictsWith` rules
 5. **Apply token replacements** — replace `__TOKEN_NAME__` placeholders in all files
 6. **Copy module files** — overlay files from `modules/<name>/files/`
@@ -90,7 +92,10 @@ launchframe/
 │   ├── dashboard-shell/    # Dashboard UI layer
 │   ├── quality-baseline/   # ESLint, Prettier, Husky
 │   ├── testing-baseline/   # Vitest, Playwright
-│   └── ai-dx/              # AI agent rules
+│   ├── ai-dx/              # Base AI rules (AGENTS.md, ARCHITECTURE.md)
+│   ├── ai-dx-cursor/       # Cursor rules (.cursor/rules/*.mdc)
+│   ├── ai-dx-claude/       # Claude Code (CLAUDE.md)
+│   └── ai-dx-gemini/       # Gemini Code Assist (.gemini/GEMINI.md)
 ├── scripts/                # Smoke generation + verification
 ├── doc/                    # Internal spec and design docs
 └── media/                  # SVG previews for README

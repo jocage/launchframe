@@ -11,7 +11,6 @@ npx create-launchframe@latest my-app
 Interactive mode asks for:
 
 - template
-- architecture
 - package manager
 - Postgres driver
 - billing provider
@@ -19,18 +18,19 @@ Interactive mode asks for:
 - email provider
 - deploy target
 - seed demo data
+- AI tools (multi-select: Cursor, Claude Code, Gemini, Copilot)
 
 Non-interactive example:
 
 ```bash
 npx create-launchframe@latest my-app \
   --template dashboard \
-  --architecture route-colocated \
   --package-manager pnpm \
   --database-driver pg \
   --billing stripe \
-  --auth email-password \
+  --auth email-password+github \
   --email-provider resend \
   --deploy-target vercel \
-  --seed-demo-data no
+  --seed-demo-data yes \
+  --ai-tools cursor,claude
 ```

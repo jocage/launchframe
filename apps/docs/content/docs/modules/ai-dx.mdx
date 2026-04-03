@@ -3,22 +3,37 @@ title: AI-First DX
 description: AI agent configuration files for Cursor, Claude Code, Copilot, Gemini, and Codex.
 ---
 
-Every generated project ships with configuration files that make AI coding tools immediately productive.
+Every generated project ships with configuration files that make AI coding tools immediately productive. You choose which tool-specific configs to include via `--ai-tools`.
 
 ## What's included
 
-| File | Used By | Purpose |
+| File | Used By | Included when |
 |---|---|---|
-| `AGENTS.md` | Cursor, Copilot, Codex, Windsurf | Tech stack, commands, MUST DO / MUST NOT DO rules, code patterns |
-| `CLAUDE.md` | Claude Code | Imports AGENTS.md + Claude-specific workflow tips |
-| `.cursor/rules/project.mdc` | Cursor | Project-wide conventions |
-| `.cursor/rules/nextjs.mdc` | Cursor | Next.js 16 patterns (App Router, server/client) |
-| `.cursor/rules/database.mdc` | Cursor | Drizzle ORM patterns |
-| `.cursor/rules/auth.mdc` | Cursor | Better Auth patterns |
-| `.cursor/rules/testing.mdc` | Cursor | Vitest + Playwright patterns |
-| `.cursor/rules/env.mdc` | Cursor | Environment variable handling |
-| `.gemini/GEMINI.md` | Gemini Code Assist | Points to AGENTS.md |
-| `ARCHITECTURE.md` | All agents + humans | Directory tree, data flow, extension points |
+| `AGENTS.md` | Cursor, Copilot, Codex, Windsurf | Always (base) |
+| `ARCHITECTURE.md` | All agents + humans | Always (base) |
+| `CLAUDE.md` | Claude Code | `--ai-tools claude` |
+| `.cursor/rules/project.mdc` | Cursor | `--ai-tools cursor` |
+| `.cursor/rules/nextjs.mdc` | Cursor | `--ai-tools cursor` |
+| `.cursor/rules/database.mdc` | Cursor | `--ai-tools cursor` |
+| `.cursor/rules/auth.mdc` | Cursor | `--ai-tools cursor` |
+| `.cursor/rules/testing.mdc` | Cursor | `--ai-tools cursor` |
+| `.cursor/rules/env.mdc` | Cursor | `--ai-tools cursor` |
+| `.gemini/GEMINI.md` | Gemini Code Assist | `--ai-tools gemini` |
+
+## Selecting AI tools
+
+```bash
+# Include everything (default)
+npx create-launchframe my-app --ai-tools all
+
+# Only Cursor and Claude
+npx create-launchframe my-app --ai-tools cursor,claude
+
+# Base only (AGENTS.md + ARCHITECTURE.md)
+npx create-launchframe my-app --ai-tools none
+```
+
+In interactive mode, the CLI presents a multi-select checkbox prompt.
 
 ## What agents learn
 
@@ -28,12 +43,16 @@ Every generated project ships with configuration files that make AI coding tools
 - **Where to find things**: router table mapping concerns to files
 - **MUST DO / MUST NOT DO**: explicit guardrails for code generation
 
-## Module info
+## Modules
 
-- **Module name**: `ai-dx`
-- **Kind**: `developer-experience`
-- **Depends on**: `quality-baseline`
-- **Included in**: all presets by default
+| Module | Files | Depends on |
+|---|---|---|
+| `ai-dx` | AGENTS.md, ARCHITECTURE.md | `quality-baseline` |
+| `ai-dx-cursor` | .cursor/rules/*.mdc | `ai-dx` |
+| `ai-dx-claude` | CLAUDE.md | `ai-dx` |
+| `ai-dx-gemini` | .gemini/GEMINI.md | `ai-dx` |
+
+The base `ai-dx` module is always included when any AI tool is selected. The sub-modules are resolved dynamically from your `--ai-tools` selection.
 
 ## Customization
 
