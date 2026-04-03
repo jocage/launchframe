@@ -1,7 +1,6 @@
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
-import { BookIcon } from 'lucide-react';
-import { GithubInfo } from 'fumadocs-ui/components/github-info';
 import { Logo } from '@/components/logo';
+import { GitHubLink } from '@/components/github-link';
 
 export function baseOptions(): BaseLayoutProps {
   return {
@@ -10,14 +9,13 @@ export function baseOptions(): BaseLayoutProps {
     },
     links: [
       {
-        icon: <BookIcon />,
         text: 'Docs',
         url: '/docs',
         active: 'nested-url',
       },
       {
         type: 'custom',
-        children: <GithubInfo owner="jocage" repo="launchframe" />,
+        children: <GitHubLink owner="jocage" repo="launchframe" />,
       },
     ],
   };
